@@ -1,24 +1,18 @@
 import { useEffect, useState } from 'react';
 
-interface Gainer {
-    ticker: string;
-    price: string;
-    change_amount: string;
-    change_percentage: string;
-    volume: string;
-}
+
 
 function Data() {
     
-    const [gainers, setGainers] = useState<Gainer[]>([]);
-    const url = 'https://www.alphavantage.co/query?function=TOP_GAINERS_LOSERS&apikey=demo';
+    const [summary, setSummary] = useState<string>('');
+    const url = 'https://stock-market-summary-server-b48b85a337b0.herokuapp.com/summarize-market';
 
     useEffect(() => {
         fetch(url)
         .then(response => response.json())
         .then(data => {
-            const topGainers = data.top_gainers;
-            setGainers(topGainers);
+            const newSummary = data.summary;
+            setSummary(newSummary);
         })
         .catch(error => {
             console.error("Error parsing response: ", error);
@@ -27,11 +21,7 @@ function Data() {
 
     return (
         <div>
-            {gainers.map((gainer, index) => (
-                <li key={index}>
-                    <strong>{gainer.ticker}: ${gainer.price} ({gainer.change_percentage} change)</strong>
-                </li>
-            ))}
+            {summary}
         </div>
     );
 
