@@ -33,7 +33,8 @@ function Data() {
         fetch(url)
         .then(response => response.json())
         .then(data => {
-            setStockData(data);
+            const parsedSummary = JSON.parse(data.summary);
+            setStockData(parsedSummary);
             
         })
         .catch(error => {
