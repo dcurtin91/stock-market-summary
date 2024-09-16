@@ -48,20 +48,28 @@ function Data() {
 
            <h3>Top Gainers</h3>
             <ul>
-                {stockData.top_gainers.map((gainer, index) => (
-                    <li key={index}>
-                        <strong>{gainer.ticker}</strong>: ${gainer.price} ({gainer.change_percent} change)
-                    </li>
-                ))}
+                {stockData.top_gainers?.length ? (
+                    stockData.top_gainers.map((gainer, index) => (
+                        <li key={index}>
+                            <strong>{gainer.ticker}</strong>: ${gainer.price} ({gainer.change_percent} change)
+                        </li>
+                    ))
+                ) : (
+                    <li>No top gainers available.</li>
+                )}
             </ul>
 
             <h3>Top Losers</h3>
             <ul>
-                {stockData.top_losers.map((loser, index) => (
-                    <li key={index}>
-                        <strong>{loser.ticker}</strong>: ${loser.price} ({loser.change_percent} change)
-                    </li>
-                ))}
+                {stockData.top_losers?.length ? (
+                    stockData.top_losers.map((loser, index) => (
+                        <li key={index}>
+                            <strong>{loser.ticker}</strong>: ${loser.price} ({loser.change_percent} change)
+                        </li>
+                    ))
+                ) : (
+                    <li>No top losers available.</li>
+                )}
             </ul>
         </div>
     );
