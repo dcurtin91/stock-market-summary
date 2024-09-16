@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'react';
 
 
+interface Summary {
+    summary: string;
+    sectors: string;
+    top_gainers: Gainer[];
+    top_losers: Loser[];
+}
+
 interface Gainer {
     ticker: string;
     price: string;
@@ -13,12 +20,12 @@ interface Loser {
     change_percent: string;
 }
 
+
+
 function Data() {
     
-    const [summary, setSummary] = useState<string>('');
-    const [sectors, setSectors] = useState<string>('');
-    const [topGainers, setTopGainers] = useState<Gainer[]>([]);
-    const [topLosers, setTopLosers] = useState<Loser[]>([]);
+    const [stockData, setStockData] = useState<Summary | null>(null);
+    
 
     const url = 'https://stock-market-summary-server-b48b85a337b0.herokuapp.com/summarize-market';
 
@@ -26,35 +33,29 @@ function Data() {
         fetch(url)
         .then(response => response.json())
         .then(data => {
-            const dataSummary = data.summary;
-            const dataSectors = data.sectors;
-            const dataTopGainers = data.top_gainers;
-            const dataTopLosers = data.top_losers;
-            setSummary(dataSummary);
-            setSectors(dataSectors);
-            setTopGainers(dataTopGainers);
-            setTopLosers(dataTopLosers);
+            setStockData(data);
+            
         })
         .catch(error => {
             console.error("Error parsing response: ", error);
         });
     }, [url]);
 
-    if (!summary) {
+    if (!stockData) {
         return <>Loading...</>;
     }
 
     return (
         <div>
            <h2>Today's Summary</h2>
-           <p>{summary}</p>
+           <p>{stockData.summary}</p>
            <h3>Notable Sector Performances</h3>
-           <p>{sectors}</p>
+           <p>{stockData.sectors}</p>
 
            <h3>Top Gainers</h3>
             <ul>
-                {topGainers?.length ? (
-                    topGainers.map((gainer, index) => (
+                {stockData.top_gainers?.length ? (
+                    stockData.top_gainers.map((gainer, index) => (
                         <li key={index}>
                             <strong>{gainer.ticker}</strong>: ${gainer.price} ({gainer.change_percent} change)
                         </li>
@@ -66,8 +67,8 @@ function Data() {
 
             <h3>Top Losers</h3>
             <ul>
-                {topLosers?.length ? (
-                    topLosers.map((loser, index) => (
+                {stockData.top_losers?.length ? (
+                    stockData.top_losers.map((loser, index) => (
                         <li key={index}>
                             <strong>{loser.ticker}</strong>: ${loser.price} ({loser.change_percent} change)
                         </li>
