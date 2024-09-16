@@ -47,14 +47,16 @@ function Data() {
            <p>{stockData.sectors}</p>
 
            <h3>Top Gainers</h3>
-           <ul>
-           {stockData.top_gainers.map((gainer, index) => (
+            <ul>
+                {stockData.top_gainers.map((gainer, index) => (
                     <li key={index}>
                         <strong>{gainer.ticker}</strong>: ${gainer.price} ({gainer.change_percent} change)
                     </li>
                 ))}
-           </ul>
-           <ul>
+            </ul>
+
+            <h3>Top Losers</h3>
+            <ul>
                 {stockData.top_losers.map((loser, index) => (
                     <li key={index}>
                         <strong>{loser.ticker}</strong>: ${loser.price} ({loser.change_percent} change)
