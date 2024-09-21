@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 
-
 interface Summary {
     summary: string;
     sectors: string;
