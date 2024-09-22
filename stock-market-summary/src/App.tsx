@@ -1,5 +1,5 @@
-import Data from './Data';
-//import GetSummaries from './Firebase';
+
+import RenderSummaries from './Firebase';
 import './App.css'
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
 
   return (
     <>
-      <Data />
+      <RenderSummaries />
     </>
   )
 }

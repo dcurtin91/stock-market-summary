@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
@@ -21,26 +22,93 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+
 type Summary = {
   id: string;
-  [key: string]: any; // Adjust based on actual fields in the summaries collection
+  summary: string;
+  sectors: string;
+  top_gainers: string;
+  top_losers: string;
 };
 
-type FirebaseCallback = (summaries: Summary[]) => void;
-
-
-
-function GetSummaries(callback: FirebaseCallback) {
-  return onSnapshot(collection(db, "summaries"), (querySnapshot) => {
-    const summaries = querySnapshot.docs.map((x) => ({
-      id: x.id,
-      ...x.data(),
-    }));
+function GetSummaries(callback: (summaries: Summary[]) => void): () => void {
+  const unsubscribe = onSnapshot(collection(db, "summaries"), (querySnapshot) => {
+    const summaries = querySnapshot.docs.map((x) => {
+      const data = x.data();
+      return {
+        id: x.id,
+        summary: data.summary || "", 
+        sectors: data.sectors || "",
+        top_gainers: data.top_gainers || "",
+        top_losers: data.top_losers || "",
+      };
+    });
 
     if (typeof callback === "function") {
       callback(summaries);
     }
   });
+
+  
+  return unsubscribe;
 }
 
-export default GetSummaries;
+
+function RenderSummaries() {
+  const [summaries, setSummaries] = useState<Summary[]>([]);
+
+  useEffect(() => {
+    const unsubscribe = GetSummaries((summaries) => {
+      setSummaries(summaries);
+    });
+
+    return () => {
+      unsubscribe();
+    }
+  }, []);
+
+  return (
+    <>
+     <h1>Stock Market Summaries</h1>
+      <ul>
+        {summaries.map((summary) => (
+          <li key={summary.id}>
+            <h2>Summary:</h2>
+            <p>{summary.summary}</p>
+            <h3>Sectors:</h3>
+            <p>{summary.sectors}</p>
+            <h3>Top Gainers:</h3>
+            <ul>
+              {Array.isArray(summary.top_gainers) ? summary.top_gainers.map((gainer, index) => (
+                <li key={index}>
+                  <p>Ticker: {gainer.ticker}</p>
+                  <p>Price: {gainer.price}</p>
+                  <p>Volume: {gainer.volume}</p>
+                  <p>Change Percentage: {gainer.change_percentage}</p>
+                  <p>Change Amount: {gainer.change_amount}</p>
+                </li>
+              )) : <p>No gainers available</p>}
+            </ul>
+
+            <h3>Top Losers:</h3>
+            <ul>
+              {Array.isArray(summary.top_losers) ? summary.top_losers.map((loser, index) => (
+                <li key={index}>
+                  <p>Ticker: {loser.ticker}</p>
+                  <p>Price: {loser.price}</p>
+                  <p>Volume: {loser.volume}</p>
+                  <p>Change Percentage: {loser.change_percentage}</p>
+                  <p>Change Amount: {loser.change_amount}</p>
+                </li>
+              )) : <p>No losers available</p>}
+            </ul>
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+
+  
+}
+
+export default RenderSummaries;
