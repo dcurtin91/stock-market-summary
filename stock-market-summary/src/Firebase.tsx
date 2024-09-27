@@ -87,7 +87,7 @@ function RenderSummaries() {
 
   
 
-  //const todaySummaries = summaries.filter(summary => summary.id === currentDate);
+ 
 
   return (
     <>
