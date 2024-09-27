@@ -26,6 +26,11 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 
+const date = new Date();
+let day = date.getDate();
+let month = date.getMonth() + 1;
+let year = date.getFullYear();
+let currentDate = `${year}-${month}-${day}`;
 
 type Summary = {
   id: string;
@@ -87,7 +92,7 @@ function RenderSummaries() {
   return (
     <>
       <h1>Stock Market Summaries</h1>
-      
+      <h3>Last update: {currentDate} at 4pm ET</h3>
       <ul>
         {summaries.map((summary) => (
           <li key={summary.id}>
