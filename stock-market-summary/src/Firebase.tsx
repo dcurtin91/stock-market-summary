@@ -92,10 +92,11 @@ function RenderSummaries() {
   return (
     <>
       <h1>Stock Market Summaries</h1>
-      <h3>Last update: {currentDate} at 4pm ET</h3>
+      
       <ul>
         {summaries.map((summary) => (
           <li key={summary.id}>
+            <h3>Last update: {summary.id} at 4pm ET</h3>
             <h2>Summary:</h2>
             <p>{summary.summary}</p>
             <h3>Sectors:</h3>
