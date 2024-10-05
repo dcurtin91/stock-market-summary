@@ -46,7 +46,11 @@ function Data() {
     }
 
     return (
-        <div>
+        <>
+        <nav>
+            
+        </nav>
+        <div className="container">
            <h2>Today's Summary</h2>
            <p>{stockData.summary}</p>
            <h3>Notable Sector Performances</h3>
@@ -78,6 +82,7 @@ function Data() {
                 )}
             </div>
         </div>
+        </>
     );
 
 }
