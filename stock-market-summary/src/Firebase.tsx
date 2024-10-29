@@ -90,7 +90,7 @@ function RenderSummaries() {
  
 
   return (
-    <>
+    <div className="container">
       <h1>Stock Market Summaries</h1>
       
       <div>
@@ -101,6 +101,7 @@ function RenderSummaries() {
             <p>{summary.summary}</p>
             <h3>Sectors:</h3>
             <p>{summary.sectors}</p>
+            <div className="table_div">
             <table>
               <thead>
                 <tr>
@@ -113,26 +114,26 @@ function RenderSummaries() {
                   <td>
                   {Array.isArray(summary.top_gainers) && summary.top_gainers.length > 0
                 ? summary.top_gainers.map((gainer, index) => (
-                    <li key={index}>
+                    <div key={index}>
                       <p>Ticker: {gainer.ticker}</p>
                       <p>Price: {gainer.price}</p>
                       <p>Volume: {gainer.volume}</p>
                       <p>Change Percentage: {gainer.change_percentage}</p>
                       <p>Change Amount: {gainer.change_amount}</p>
-                    </li>
+                    </div>
                   ))
                 : <p>No gainers available</p>}
                   </td>
                   <td>
                   {Array.isArray(summary.top_losers) && summary.top_losers.length > 0
                 ? summary.top_losers.map((loser, index) => (
-                    <li key={index}>
+                    <div key={index}>
                       <p>Ticker: {loser.ticker}</p>
                       <p>Price: {loser.price}</p>
                       <p>Volume: {loser.volume}</p>
                       <p>Change Percentage: {loser.change_percentage}</p>
                       <p>Change Amount: {loser.change_amount}</p>
-                    </li>
+                    </div>
                   ))
                 : <p>No losers available</p>}
                   </td>
@@ -140,11 +141,12 @@ function RenderSummaries() {
               </tbody>
             
             </table>
+            </div>
           </div>
         ))}
       </div>
       
-    </>
+    </div>
   );
 }
 
