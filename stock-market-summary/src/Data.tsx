@@ -55,10 +55,16 @@ function Data() {
            <p>{stockData.summary}</p>
            <h3>Notable Sector Performances</h3>
            <p>{stockData.sectors}</p>
-
-           <h3>Top Gainers</h3>
-            <div>
-                {stockData.top_gainers?.length ? (
+            <table>
+                <thead>
+                    <tr>
+                    <th>Top Gainers</th>
+                    <th>Top Losers</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                    <td>{stockData.top_gainers?.length ? (
                     stockData.top_gainers.map((gainer, index) => (
                         <p key={index}>
                             <strong>{gainer.ticker}</strong>: ${gainer.price} ({gainer.change_percent} change)
@@ -66,11 +72,8 @@ function Data() {
                     ))
                 ) : (
                     <p>No top gainers available.</p>
-                )}
-            </div>
-
-            <h3>Top Losers</h3>
-            <div>
+                )}</td>
+                <td>
                 {stockData.top_losers?.length ? (
                     stockData.top_losers.map((loser, index) => (
                         <div key={index}>
@@ -80,7 +83,12 @@ function Data() {
                 ) : (
                     <div>No top losers available.</div>
                 )}
-            </div>
+                </td>
+                    </tr>
+                </tbody>
+          
+            
+            </table>
         </div>
         </>
     );

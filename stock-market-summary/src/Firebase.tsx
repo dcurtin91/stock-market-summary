@@ -26,11 +26,11 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 
-const date = new Date();
-let day = date.getDate();
-let month = date.getMonth() + 1;
-let year = date.getFullYear();
-let currentDate = `${year}-${month}-${day}`;
+// const date = new Date();
+// let day = date.getDate();
+// let month = date.getMonth() + 1;
+// let year = date.getFullYear();
+// let currentDate = `${year}-${month}-${day}`;
 
 type Summary = {
   id: string;
@@ -93,17 +93,25 @@ function RenderSummaries() {
     <>
       <h1>Stock Market Summaries</h1>
       
-      <ul>
+      <div>
         {summaries.map((summary) => (
-          <li key={summary.id}>
+          <div key={summary.id}>
             <h3>Last update: {summary.id} at 4pm ET</h3>
             <h2>Summary:</h2>
             <p>{summary.summary}</p>
             <h3>Sectors:</h3>
             <p>{summary.sectors}</p>
-            <h3>Top Gainers:</h3>
-            <ul>
-              {Array.isArray(summary.top_gainers) && summary.top_gainers.length > 0
+            <table>
+              <thead>
+                <tr>
+                  <th>Top Gainers</th>
+                  <th>Top Losers</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                  {Array.isArray(summary.top_gainers) && summary.top_gainers.length > 0
                 ? summary.top_gainers.map((gainer, index) => (
                     <li key={index}>
                       <p>Ticker: {gainer.ticker}</p>
@@ -114,11 +122,9 @@ function RenderSummaries() {
                     </li>
                   ))
                 : <p>No gainers available</p>}
-            </ul>
-
-            <h3>Top Losers:</h3>
-            <ul>
-              {Array.isArray(summary.top_losers) && summary.top_losers.length > 0
+                  </td>
+                  <td>
+                  {Array.isArray(summary.top_losers) && summary.top_losers.length > 0
                 ? summary.top_losers.map((loser, index) => (
                     <li key={index}>
                       <p>Ticker: {loser.ticker}</p>
@@ -129,10 +135,14 @@ function RenderSummaries() {
                     </li>
                   ))
                 : <p>No losers available</p>}
-            </ul>
-          </li>
+                  </td>
+                </tr>
+              </tbody>
+            
+            </table>
+          </div>
         ))}
-      </ul>
+      </div>
       
     </>
   );
