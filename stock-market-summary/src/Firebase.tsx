@@ -106,6 +106,7 @@ function RenderSummaries() {
               <thead>
                 <tr>
                   <th>Top Gainers</th>
+                  <th></th>
                   <th>Top Losers</th>
                 </tr>
               </thead>
@@ -114,9 +115,9 @@ function RenderSummaries() {
                   <td>
                   {Array.isArray(summary.top_gainers) && summary.top_gainers.length > 0
                 ? summary.top_gainers.map((gainer, index) => (
-                    <div key={index}>
+                    <div key={index} className="table_data">
                       <p>Ticker: {gainer.ticker}</p>
-                      <p>Price: {gainer.price}</p>
+                      <p>Price: ${gainer.price}</p>
                       <p>Volume: {gainer.volume}</p>
                       <p>Change Percentage: {gainer.change_percentage}</p>
                       <p>Change Amount: {gainer.change_amount}</p>
@@ -124,12 +125,13 @@ function RenderSummaries() {
                   ))
                 : <p>No gainers available</p>}
                   </td>
+                  <td></td>
                   <td>
                   {Array.isArray(summary.top_losers) && summary.top_losers.length > 0
                 ? summary.top_losers.map((loser, index) => (
-                    <div key={index}>
+                    <div key={index} className="table_data">
                       <p>Ticker: {loser.ticker}</p>
-                      <p>Price: {loser.price}</p>
+                      <p>Price: ${loser.price}</p>
                       <p>Volume: {loser.volume}</p>
                       <p>Change Percentage: {loser.change_percentage}</p>
                       <p>Change Amount: {loser.change_amount}</p>
