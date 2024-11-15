@@ -116,10 +116,10 @@ function RenderSummaries() {
                   {Array.isArray(summary.top_gainers) && summary.top_gainers.length > 0
                 ? summary.top_gainers.map((gainer, index) => (
                     <div key={index} className="table_data">
-                      <p>Ticker: {gainer.ticker}</p>
+                      <p>Ticker: <a href={`https://finance.yahoo.com/quote/${gainer.ticker}`} target="_blank" rel="noopener noreferrer">{gainer.ticker}</a></p>
                       <p>Price: ${gainer.price}</p>
                       <p>Volume: {gainer.volume}</p>
-                      <p>Change Percentage: {gainer.change_percentage}</p>
+                      <p>Percent Change: {gainer.change_percentage}</p>
                       <p>Change Amount: {gainer.change_amount}</p>
                     </div>
                   ))
@@ -130,11 +130,11 @@ function RenderSummaries() {
                   {Array.isArray(summary.top_losers) && summary.top_losers.length > 0
                 ? summary.top_losers.map((loser, index) => (
                     <div key={index} className="table_data">
-                      <p>Ticker: {loser.ticker}</p>
+                      <p>Ticker: <a href={`https://finance.yahoo.com/quote/${loser.ticker}`} target="_blank" rel="noopener noreferrer">{loser.ticker}</a></p>
                       <p>Price: ${loser.price}</p>
                       <p>Volume: {loser.volume}</p>
-                      <p>Change Percentage: {loser.change_percentage}</p>
-                      <p>Change Amount: {loser.change_amount}</p>
+                      <p>Percent Change: {loser.change_percentage}</p>
+                      <p>Change Amount: ${loser.change_amount}</p>
                     </div>
                   ))
                 : <p>No losers available</p>}
