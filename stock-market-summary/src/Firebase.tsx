@@ -118,9 +118,9 @@ function RenderSummaries() {
                     <div key={index} className="table_data">
                       <p>Ticker: <a href={`https://finance.yahoo.com/quote/${gainer.ticker}`} target="_blank" rel="noopener noreferrer">{gainer.ticker}</a></p>
                       <p>Price: ${gainer.price}</p>
-                      <p>Volume: {gainer.volume}</p>
+                      <p>Volume: {gainer.volume.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
                       <p>Percent Change: {gainer.change_percentage}</p>
-                      <p>Change Amount: {gainer.change_amount}</p>
+                      <p>Change Amount: ${gainer.change_amount.toLocaleString('en')}</p>
                     </div>
                   ))
                 : <p>No gainers available</p>}
@@ -132,9 +132,9 @@ function RenderSummaries() {
                     <div key={index} className="table_data">
                       <p>Ticker: <a href={`https://finance.yahoo.com/quote/${loser.ticker}`} target="_blank" rel="noopener noreferrer">{loser.ticker}</a></p>
                       <p>Price: ${loser.price}</p>
-                      <p>Volume: {loser.volume}</p>
+                      <p>Volume: {loser.volume.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
                       <p>Percent Change: {loser.change_percentage}</p>
-                      <p>Change Amount: ${loser.change_amount}</p>
+                      <p>Change Amount: <span className="negativeCurr">{loser.change_amount.toString().replace(/-/g, "")}</span></p>
                     </div>
                   ))
                 : <p>No losers available</p>}

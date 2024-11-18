@@ -82,6 +82,10 @@ ul {
   text-align: center;
 }
 
+.negativeCurr::before {
+  content: '-$';
+}
+
 .table_data {
   background-color: rgb(195, 195, 195);
   color: black;
@@ -97,3 +101,4 @@ ul {
   text-align: center;
   margin-top: 40px;
 }
+
