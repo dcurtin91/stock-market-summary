@@ -85,7 +85,7 @@ function RenderSummaries() {
 
   return (
     <div className="container">
-      <h1>Stock Market Summaries</h1>
+      <h1>Daily Stock Market Summaries</h1>
       
       <div>
         {summaries.map((summary) => (
