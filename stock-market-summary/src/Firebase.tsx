@@ -29,7 +29,7 @@ const db = getFirestore(app);
 type Summary = {
   id: string;
   summary: string;
-  sectors: string;
+  most_active: string;
   top_gainers: string;
   top_losers: string;
 };
@@ -48,7 +48,7 @@ function GetSummaries(callback: (summaries: Summary[]) => void): () => void {
       return {
         id: x.id,
         summary: data.summary || "", 
-        sectors: data.sectors || "",
+        most_active: data.most_actively_traded || "",
         top_gainers: data.top_gainers || "",
         top_losers: data.top_losers || "",
       };
@@ -93,8 +93,14 @@ function RenderSummaries() {
             <h3>Last update: {summary.id} at 4pm ET</h3>
             <h2>Summary:</h2>
             <p>{summary.summary}</p>
-            <h3>Sectors:</h3>
-            <p>{summary.sectors}</p>
+            <h3>Today's Most Actively Traded Stocks:</h3>
+            <p>{Array.isArray(summary.most_active) && summary.most_active.length > 0 ? 
+            summary.most_active.map((stock, index) => (
+              <div key={index}>
+                <p><a href={`https://finance.yahoo.com/quote/${stock.ticker}`} target="_blank" rel="noopener noreferrer">{stock.ticker}</a></p>
+              </div>
+            )) : 
+            <p>No trading data available</p> }</p>
             <div className="table_div">
             <table>
               <thead>
