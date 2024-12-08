@@ -38,10 +38,6 @@ h1 {
 }
 
 h4 {
-  background: linear-gradient(rgba(255, 254, 254, 0.8), rgba(182, 183, 183, 0.728));
-  background-clip: inherit;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   margin-top: -10px;
 }
 
