@@ -40,8 +40,8 @@ function GetSummaries(callback: (summaries: Summary[]) => void): () => void {
     orderBy("timestamp", "desc"),
     limit(1)
   );
-  console.log(q);
-  
+
+
   const unsubscribe = onSnapshot(q, (querySnapshot) => {
     const summaries = querySnapshot.docs.map((x) => {
       const data = x.data();
@@ -59,15 +59,20 @@ function GetSummaries(callback: (summaries: Summary[]) => void): () => void {
     }
   });
 
-  
+
   return unsubscribe;
 }
 
+function ConvertString(value: string) {
+  return (
+    parseFloat(value.replace("%", ""))
+  );
+}
 
 function RenderSummaries() {
   const [summaries, setSummaries] = useState<Summary[]>([]);
 
-  
+
 
   useEffect(() => {
     const unsubscribe = GetSummaries((summaries) => {
@@ -80,8 +85,10 @@ function RenderSummaries() {
   }, []);
 
   
+  
 
- 
+
+
 
   return (
     <div className="container">
@@ -90,61 +97,79 @@ function RenderSummaries() {
         {summaries.map((summary) => (
           <div key={summary.id}>
             <h4>Last update: {summary.id} at 4pm ET</h4>
-            <h3>Today's Most Actively Traded Stocks:</h3>
-            <div>{Array.isArray(summary.most_active) && summary.most_active.length > 0 ? 
-            summary.most_active.map((stock, index) => (
-              <div key={index}>
-                <p><a href={`https://finance.yahoo.com/quote/${stock.ticker}`} target="_blank" rel="noopener noreferrer">{stock.ticker}</a></p>
-              </div>
-            )) : 
-            <p>No trading data available</p> }</div>
             <div className="table_div">
-            <table>
-              <thead>
-                <tr>
-                  <th>Top Gainers</th>
-                  <th></th>
-                  <th>Top Losers</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                  {Array.isArray(summary.top_gainers) && summary.top_gainers.length > 0
-                ? summary.top_gainers.map((gainer, index) => (
-                    <div key={index} className="table_data">
-                      <p>Ticker: <a href={`https://finance.yahoo.com/quote/${gainer.ticker}`} target="_blank" rel="noopener noreferrer">{gainer.ticker}</a></p>
-                      <p>Price: ${gainer.price}</p>
-                      <p>Volume: {gainer.volume.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-                      <p>Change Percentage: {gainer.change_percentage}</p>
-                      <p>Total Change Amount: ${gainer.change_amount.toLocaleString('en')}</p>
-                    </div>
-                  ))
-                : <p>No gainers available</p>}
-                  </td>
-                  <td></td>
-                  <td>
-                  {Array.isArray(summary.top_losers) && summary.top_losers.length > 0
-                ? summary.top_losers.map((loser, index) => (
-                    <div key={index} className="table_data">
-                      <p>Ticker: <a href={`https://finance.yahoo.com/quote/${loser.ticker}`} target="_blank" rel="noopener noreferrer">{loser.ticker}</a></p>
-                      <p>Price: ${loser.price}</p>
-                      <p>Volume: {loser.volume.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
-                      <p>Change Percentage: {loser.change_percentage}</p>
-                      <p>Total Change Amount: <span className="negativeCurr">{loser.change_amount.toString().replace(/-/g, "")}</span></p>
-                    </div>
-                  ))
-                : <p>No losers available</p>}
-                  </td>
-                </tr>
-              </tbody>
-            
-            </table>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Today's Most Actively Traded Stocks</th>
+                  </tr>
+                  <tr>
+                    <td>
+                      {Array.isArray(summary.most_active) && summary.most_active.length > 0 ?
+                        summary.most_active.map((stock, index) => (
+                          <div key={index} className="table_data">
+                            <p><a href={`https://finance.yahoo.com/quote/${stock.ticker}`} target="_blank" rel="noopener noreferrer">{stock.ticker}</a></p>
+                            <p>{ConvertString(stock.change_percentage) > 0 ? 
+                              <span className="up_arrow">⬆</span> :
+                              <span className="down_arrow">⬇</span> }</p>
+                          </div>
+                        )) :
+                        <p>No trading data available</p>}
+                    </td>
+                  </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+              </table>
+            </div>
+            <div className="table_div">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Top Gainers</th>
+                    <th></th>
+                    <th>Top Losers</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      {Array.isArray(summary.top_gainers) && summary.top_gainers.length > 0
+                        ? summary.top_gainers.map((gainer, index) => (
+                          <div key={index} className="table_data">
+                            <p><a href={`https://finance.yahoo.com/quote/${gainer.ticker}`} target="_blank" rel="noopener noreferrer">{gainer.ticker}</a></p>
+                            <p>Price: ${gainer.price}</p>
+                            <p>Volume: {gainer.volume.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+                            <p>Change Percentage: {gainer.change_percentage}</p>
+                            <p>Total Change Amount: ${gainer.change_amount.toLocaleString('en')}</p>
+                          </div>
+                        ))
+                        : <p>No gainers available</p>}
+                    </td>
+                    <td></td>
+                    <td>
+                      {Array.isArray(summary.top_losers) && summary.top_losers.length > 0
+                        ? summary.top_losers.map((loser, index) => (
+                          <div key={index} className="table_data">
+                            <p><a href={`https://finance.yahoo.com/quote/${loser.ticker}`} target="_blank" rel="noopener noreferrer">{loser.ticker}</a></p>
+                            <p>Price: ${loser.price}</p>
+                            <p>Volume: {loser.volume.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
+                            <p>Change Percentage: {loser.change_percentage}</p>
+                            <p>Total Change Amount: <span className="negativeCurr">{loser.change_amount.toString().replace(/-/g, "")}</span></p>
+                          </div>
+                        ))
+                        : <p>No losers available</p>}
+                    </td>
+                  </tr>
+                </tbody>
+
+              </table>
             </div>
           </div>
         ))}
       </div>
-      
+
     </div>
   );
 }
