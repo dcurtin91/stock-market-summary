@@ -28,11 +28,29 @@ const db = getFirestore(app);
 
 type Summary = {
   id: string;
-  //summary: string;
-  most_active: string;
-  top_gainers: string;
-  top_losers: string;
+  most_actively_traded: Array<{
+    ticker: string;
+    price: string;
+    change_amount: string;
+    change_percentage: string;
+    volume: string;
+  }>;
+  top_gainers: Array<{
+    ticker: string;
+    price: string;
+    change_amount: string;
+    change_percentage: string;
+    volume: string;
+  }>;
+  top_losers: Array<{
+    ticker: string;
+    price: string;
+    change_amount: string;
+    change_percentage: string;
+    volume: string;
+  }>;
 };
+
 
 function GetSummaries(callback: (summaries: Summary[]) => void): () => void {
   const q = query(
@@ -48,9 +66,9 @@ function GetSummaries(callback: (summaries: Summary[]) => void): () => void {
       return {
         id: x.id,
         //summary: data.summary || "", 
-        most_active: data.most_actively_traded || "",
-        top_gainers: data.top_gainers || "",
-        top_losers: data.top_losers || "",
+        most_actively_traded: data.most_actively_traded || [],
+        top_gainers: data.top_gainers || [],
+        top_losers: data.top_losers || [],
       };
     });
 
@@ -105,16 +123,18 @@ function RenderSummaries() {
                   </tr>
                   <tr>
                     <td>
-                      {Array.isArray(summary.most_active) && summary.most_active.length > 0 ?
-                        summary.most_active.map((stock, index) => (
+                      {Array.isArray(summary.most_actively_traded) && summary.most_actively_traded.length > 0 ?
+                        (summary.most_actively_traded.slice(0, 4).map((stock, index) => (
                           <div key={index} className="table_data">
-                            <p><a href={`https://finance.yahoo.com/quote/${stock.ticker}`} target="_blank" rel="noopener noreferrer">{stock.ticker}</a></p>
+                            <p>
+                              <a href={`https://finance.yahoo.com/quote/${stock.ticker}`} target="_blank" rel="noopener noreferrer">{stock.ticker}</a></p>
                             <p>{ConvertString(stock.change_percentage) > 0 ? 
                               <span className="up_arrow">⬆</span> :
                               <span className="down_arrow">⬇</span> }</p>
                           </div>
-                        )) :
-                        <p>No trading data available</p>}
+                        )) 
+                      ) : (
+                        <p>No trading data available</p>)}
                     </td>
                   </tr>
                 </thead>
@@ -142,10 +162,11 @@ function RenderSummaries() {
                             <p>Price: ${gainer.price}</p>
                             <p>Volume: {gainer.volume.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
                             <p>Change Percentage: {gainer.change_percentage}</p>
-                            <p>Total Change Amount: ${gainer.change_amount.toLocaleString('en')}</p>
+                            <p>Total Change Amount: ${gainer.change_amount.toLocaleString()}</p> 
                           </div>
                         ))
                         : <p>No gainers available</p>}
+                        
                     </td>
                     <td></td>
                     <td>
