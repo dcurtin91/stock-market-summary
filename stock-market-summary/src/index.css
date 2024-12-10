@@ -94,8 +94,7 @@ ul {
   background-color: rgb(19, 19, 19);
   color: white;
   border-radius: 5px;
-  padding-top: 2px;
-  padding-bottom: 2px;
+  padding: 5px;
   margin-bottom: 5px;
 }
 
@@ -104,6 +103,13 @@ ul {
   flex-direction: column;
   text-align: center;
   margin-top: 40px;
+}
+
+.table_grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 5px;
 }
 
 .up_arrow {
