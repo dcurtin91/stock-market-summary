@@ -112,16 +112,16 @@ function RenderSummaries() {
 
   return (
     <div className="container">
-      <h2>Daily Stock Market Summary</h2>
+      <h2>Stock Market Summary</h2>
       <div>
         {summaries.map((summary) => (
           <div key={summary.id}>
-            <h4>Last update: {summary.last_updated}</h4>
+            <h4>{summary.last_updated}</h4>
             <div className="table_div">
               <table>
                 <thead>
                   <tr>
-                    <th>Today's Most Actively Traded Stocks</th>
+                    <th>Most Actively Traded Stocks</th>
                   </tr>
                 </thead>
                 <tbody>
