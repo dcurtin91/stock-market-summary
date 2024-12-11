@@ -28,6 +28,7 @@ const db = getFirestore(app);
 
 type Summary = {
   id: string;
+  last_updated: string;
   most_actively_traded: Array<{
     ticker: string;
     price: string;
@@ -65,6 +66,7 @@ function GetSummaries(callback: (summaries: Summary[]) => void): () => void {
       const data = x.data();
       return {
         id: x.id,
+        last_updated: data.last_updated || "",
         //summary: data.summary || "", 
         most_actively_traded: data.most_actively_traded || [],
         top_gainers: data.top_gainers || [],
@@ -114,7 +116,7 @@ function RenderSummaries() {
       <div>
         {summaries.map((summary) => (
           <div key={summary.id}>
-            <h4>Last update: {summary.id} at 4pm ET</h4>
+            <h4>Last update: {summary.last_updated}</h4>
             <div className="table_div">
               <table>
                 <thead>
