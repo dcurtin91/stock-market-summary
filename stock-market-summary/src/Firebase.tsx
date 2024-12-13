@@ -133,8 +133,15 @@ function RenderSummaries() {
                           {summary.most_actively_traded.slice(0, 4).map((stock, index) => (
                             <div key={index} className="table_data">
                               <p>
-                                <a href={`https://finance.yahoo.com/quote/${stock.ticker}`} target="_blank" rel="noopener noreferrer">
-                                  {stock.ticker} 
+                              <a
+                                  href="#"
+                                  onClick={async () => {
+                                    const response = await fetch(`http://localhost:3000/articles?ticker=${stock.ticker}`);
+                                    const data = await response.json();
+                                    console.log(data); // Handle the response as needed
+                                  }}
+                                >
+                                  {stock.ticker}
                                 </a>
                               </p>
                               <p>

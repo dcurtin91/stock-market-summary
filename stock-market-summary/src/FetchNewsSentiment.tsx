@@ -1,198 +1,109 @@
-import  { useState, useEffect } from "react";
-import { initializeApp } from "firebase/app";
-import {
-  getFirestore,
-  collection,
-  orderBy,
-  limit,
-  onSnapshot,
-  query,
-} from "firebase/firestore";
+import React, { useEffect, useState } from 'react';
 
-const API_KEY = import.meta.env.VITE_API_KEY;
-
-const firebaseConfig = {
-  apiKey: API_KEY,
-  authDomain: "stock-market-summarizer.firebaseapp.com",
-  projectId: "stock-market-summarizer",
-  storageBucket: "stock-market-summarizer.appspot.com",
-  messagingSenderId: "219851290952",
-  appId: "1:219851290952:web:bad6129a8901a5e4e61b7d",
-  measurementId: "G-B9BJC82143",
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-type StockNews = {
-  ticker: string;
-  headlines: Array<{ title: string; url: string }>;
-};
-
-type Summary = {
-  id: string;
-  last_updated: string;
-  most_actively_traded: Array<{
-    ticker: string;
-    price: string;
-    change_amount: string;
-    change_percentage: string;
-    volume: string;
-  }>;
-  top_gainers: Array<{
-    ticker: string;
-    price: string;
-    change_amount: string;
-    change_percentage: string;
-    volume: string;
-  }>;
-  top_losers: Array<{
-    ticker: string;
-    price: string;
-    change_amount: string;
-    change_percentage: string;
-    volume: string;
-  }>;
-};
-
-function GetSummaries(callback: (summaries: Summary[]) => void): () => void {
-  const q = query(
-    collection(db, "summaries"),
-    orderBy("timestamp", "desc"),
-    limit(1)
-  );
-
-  const unsubscribe = onSnapshot(q, (querySnapshot) => {
-    const summaries = querySnapshot.docs.map((x) => {
-      const data = x.data();
-      return {
-        id: x.id,
-        last_updated: data.last_updated || "",
-        most_actively_traded: data.most_actively_traded || [],
-        top_gainers: data.top_gainers || [],
-        top_losers: data.top_losers || [],
-      };
-    });
-
-    if (typeof callback === "function") {
-      callback(summaries);
-    }
-  });
-
-  return unsubscribe;
+interface Topic {
+  topic: string;
+  relevance_score: string;
 }
 
+interface TickerSentiment {
+  ticker: string;
+  relevance_score: string;
+  ticker_sentiment_score: string;
+  ticker_sentiment_label: string;
+}
 
+interface FeedItem {
+  title: string;
+  url: string;
+  time_published: string;
+  authors: string[];
+  summary: string;
+  banner_image: string;
+  source: string;
+  category_within_source: string;
+  source_domain: string;
+  topics: Topic[];
+  overall_sentiment_score: number;
+  overall_sentiment_label: string;
+  ticker_sentiment: TickerSentiment[];
+}
 
-function RenderSummaries() {
-  const [summaries, setSummaries] = useState<Summary[]>([]);
-  const [newsData, setNewsData] = useState<Record<string, StockNews>>({});
-  const [loadingNews, setLoadingNews] = useState(false);
+interface Data {
+  items: string;
+  sentiment_score_definition: string;
+  relevance_score_definition: string;
+  feed: FeedItem[];
+}
+
+const NewsFeed: React.FC = () => {
+  const [data, setData] = useState<Data | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const unsubscribe = GetSummaries((summaries) => {
-      setSummaries(summaries);
-    });
-
-    return () => {
-      unsubscribe();
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/articles');
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const result: Data = await response.json();
+        setData(result);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
     };
+
+    fetchData();
   }, []);
 
-  const fetchNewsSentiment = async (ticker: string) => {
-    setLoadingNews(true);
-    try {
-      const response = await fetch(
-        `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${ticker}&apikey=${API_KEY}`
-      );
-      const data = await response.json();
-      if (data.feed) {
-        setNewsData((prev) => ({
-          ...prev,
-          [ticker]: {
-            ticker,
-            headlines: data.feed.map((item: any) => ({
-              title: item.title,
-              url: item.url,
-            })),
-          },
-        }));
-      }
-    } catch (error) {
-      console.error(`Error fetching news for ${ticker}:`, error);
-    } finally {
-      setLoadingNews(false);
-    }
-  };
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!data) return <div>No data available</div>;
 
   return (
-    <div className="container">
-      <h2>Stock Market Summary</h2>
-      <div>
-        {summaries.map((summary) => (
-          <div key={summary.id}>
-            <h4>{summary.last_updated}</h4>
-            <div className="table_div">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Most Actively Traded Stocks</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      {Array.isArray(summary.most_actively_traded) &&
-                      summary.most_actively_traded.length > 0 ? (
-                        <div className="table_grid">
-                          {summary.most_actively_traded.slice(0, 4).map(
-                            (stock, index) => (
-                              <div key={index} className="table_data">
-                                <p>
-                                  <button
-                                    onClick={() =>
-                                      fetchNewsSentiment(stock.ticker)
-                                    }
-                                  >
-                                    Get News for {stock.ticker}
-                                  </button>
-                                </p>
-                                {newsData[stock.ticker]?.headlines ? (
-                                  <ul>
-                                    {newsData[stock.ticker].headlines.map(
-                                      (news, idx) => (
-                                        <li key={idx}>
-                                          <a
-                                            href={news.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                          >
-                                            {news.title}
-                                          </a>
-                                        </li>
-                                      )
-                                    )}
-                                  </ul>
-                                ) : loadingNews ? (
-                                  <p>Loading news...</p>
-                                ) : null}
-                              </div>
-                            )
-                          )}
-                        </div>
-                      ) : (
-                        <p>No trading data available</p>
-                      )}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+    <div className="news-feed">
+      <h1>News Feed</h1>
+      <p><strong>Items:</strong> {data.items}</p>
+      <p><strong>Sentiment Score Definition:</strong> {data.sentiment_score_definition}</p>
+      <p><strong>Relevance Score Definition:</strong> {data.relevance_score_definition}</p>
+
+      {data.feed.map((item, index) => (
+        <div key={index} className="news-item">
+          <h2><a href={item.url} target="_blank" rel="noopener noreferrer">{item.title}</a></h2>
+          <img src={item.banner_image} alt="Banner" className="banner-image" />
+          <p><strong>Published:</strong> {new Date(item.time_published).toLocaleString()}</p>
+          <p><strong>Authors:</strong> {item.authors.join(', ')}</p>
+          <p><strong>Summary:</strong> {item.summary}</p>
+          <p><strong>Source:</strong> {item.source} ({item.source_domain})</p>
+          <p><strong>Category:</strong> {item.category_within_source || 'N/A'}</p>
+          <p><strong>Overall Sentiment:</strong> {item.overall_sentiment_label} ({item.overall_sentiment_score})</p>
+
+          <div className="topics">
+            <h3>Topics</h3>
+            <ul>
+              {item.topics.map((topic, idx) => (
+                <li key={idx}>{topic.topic} (Relevance: {topic.relevance_score})</li>
+              ))}
+            </ul>
           </div>
-        ))}
-      </div>
+
+          <div className="ticker-sentiment">
+            <h3>Ticker Sentiment</h3>
+            <ul>
+              {item.ticker_sentiment.map((ticker, idx) => (
+                <li key={idx}>
+                  {ticker.ticker} - {ticker.ticker_sentiment_label} (Score: {ticker.ticker_sentiment_score}, Relevance: {ticker.relevance_score})
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ))}
     </div>
   );
-}
+};
 
-export default RenderSummaries;
+export default NewsFeed;
