@@ -10,10 +10,11 @@ import {
 } from "firebase/firestore";
 
 
-const API_KEY = import.meta.env.VITE_API_KEY;
+//const API_KEY = import.meta.env.VITE_API_KEY;
+
 
 const firebaseConfig = {
-  apiKey: API_KEY,
+  //apiKey: API_KEY,
   authDomain: "stock-market-summarizer.firebaseapp.com",
   projectId: "stock-market-summarizer",
   storageBucket: "stock-market-summarizer.appspot.com",
@@ -133,7 +134,7 @@ function RenderSummaries() {
                             <div key={index} className="table_data">
                               <p>
                                 <a href={`https://finance.yahoo.com/quote/${stock.ticker}`} target="_blank" rel="noopener noreferrer">
-                                  {stock.ticker}
+                                  {stock.ticker} 
                                 </a>
                               </p>
                               <p>
