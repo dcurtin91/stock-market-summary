@@ -1,44 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-interface Topic {
-  topic: string;
-  relevance_score: string;
-}
 
-interface TickerSentiment {
-  ticker: string;
-  relevance_score: string;
-  ticker_sentiment_score: string;
-  ticker_sentiment_label: string;
-}
-
-interface FeedItem {
-  title: string;
-  url: string;
-  time_published: string;
-  authors: string[];
-  summary: string;
-  banner_image: string;
-  source: string;
-  category_within_source: string;
-  source_domain: string;
-  topics: Topic[];
-  overall_sentiment_score: number;
-  overall_sentiment_label: string;
-  ticker_sentiment: TickerSentiment[];
-}
-
-interface Data {
-  items: string;
-  sentiment_score_definition: string;
-  relevance_score_definition: string;
-  feed: FeedItem[];
-}
-
-const NewsFeed: React.FC = () => {
-  const [data, setData] = useState<Data>();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+function FetchNews() {
+  const [data, setData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,10 +13,10 @@ const NewsFeed: React.FC = () => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        const result: Data = await response.json();
-        console.log(result);
+        const result = await response.json();
         setData(result);
-      } catch (err: any) {
+        console.log(data);
+      } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
@@ -67,8 +33,8 @@ const NewsFeed: React.FC = () => {
   return (
     <div className="news-feed">
       <h1>News Feed</h1>
-      <p><strong>Items:</strong> {data.items}</p>
-      <p><strong>Sentiment Score Definition:</strong> {data.sentiment_score_definition}</p>
+      <p><strong>Item:</strong> {data.data.items}</p>
+      <p><strong>Sentiment Score Definition:</strong> {data.data.sentiment_score_definition}</p>
       <p><strong>Relevance Score Definition:</strong> {data.relevance_score_definition}</p>
 
       {data.feed && data.feed.map((item, index) => (
@@ -107,6 +73,6 @@ const NewsFeed: React.FC = () => {
   );
 };
 
-export default NewsFeed;
+export default FetchNews;
 
 
