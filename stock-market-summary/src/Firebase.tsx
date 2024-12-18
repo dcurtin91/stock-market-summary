@@ -9,9 +9,7 @@ import {
   query
 } from "firebase/firestore";
 
-
 //const API_KEY = import.meta.env.VITE_API_KEY;
-
 
 const firebaseConfig = {
   //apiKey: API_KEY,

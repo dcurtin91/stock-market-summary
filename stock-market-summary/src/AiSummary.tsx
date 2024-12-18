@@ -33,7 +33,6 @@ function GetAnalysis(callback: (analyses: Collection[]) => void): () => void {
     limit(1)
   );
 
-
   const unsubscribe = onSnapshot(q, (querySnapshot) => {
     const collection = querySnapshot.docs.map((x) => {
       const data = x.data();
@@ -54,7 +53,7 @@ function GetAnalysis(callback: (analyses: Collection[]) => void): () => void {
 
 
 
-function NewsFeed() {
+function AiSummary() {
   const[analyses, setAnalyses] = useState<Collection[]>([]);
 
   useEffect(() => {
@@ -81,6 +80,6 @@ function NewsFeed() {
   );
 };
 
-export default NewsFeed;
+export default AiSummary;
 
 

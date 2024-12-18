@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import RenderSummaries from './Firebase';
-import NewsFeed from "./NewsFeed";
+import AiSummary from "./AiSummary";
 import './App.css'
 
   const App: React.FC = () => {
@@ -9,7 +9,7 @@ import './App.css'
         <Router>
           <Routes>
             <Route path="/" element={<RenderSummaries />} />
-            <Route path="/news1" element={<NewsFeed />} />
+            <Route path="/news1" element={<AiSummary />} />
           </Routes>
         </Router>
       </div>
