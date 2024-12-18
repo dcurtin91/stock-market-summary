@@ -8,6 +8,7 @@ import {
   onSnapshot,
   query
 } from "firebase/firestore";
+import AiSummary from "./AiSummary";
 
 
 const firebaseConfig = {
@@ -28,6 +29,7 @@ type Collection = {
   feed: Array<{
     title: string;
     url: string;
+    source: string; 
   }>;
 };
 
@@ -59,7 +61,7 @@ function GetArticles(callback: (articles: Collection[]) => void): () => void {
 }
 
 
-function RenderArticles() {
+function FetchNews() {
   const [articles, setArticles] = useState<Collection[]>([]);
 
 
@@ -76,8 +78,8 @@ function RenderArticles() {
 
   return (
     <div className="container">
-      <h2>Recent Articles</h2>
       <div>
+        <div><AiSummary /></div>
         {articles.map((item) => (
           <div key={item.id}>
             <h4></h4>
@@ -85,7 +87,7 @@ function RenderArticles() {
               <table>
                 <thead>
                   <tr>
-                    <th>Most Actively Traded Stocks</th>
+                    <th>Recent Articles</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -93,9 +95,10 @@ function RenderArticles() {
                     <td>
                       {Array.isArray(item.feed) && item.feed.length > 0 ? (
                         <div className="table_grid">
-                          {item.feed.slice(0, 4).map((record, index) => (
+                          {item.feed.slice(0, 10).map((record, index) => (
                             <div key={index} className="table_data">
                                 <a href={`${record.url}`}>{record.title}</a>
+                                <p>{record.source}</p>
                             </div>
                           ))}
                         </div>
@@ -117,5 +120,5 @@ function RenderArticles() {
   );
 }
 
-export default RenderArticles;
+export default FetchNews;
 

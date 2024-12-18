@@ -68,14 +68,11 @@ function AiSummary() {
 
   return (
     <div className='container'>
-      <h2>Recent News</h2>
-      <div>
         {analyses.map((item) => (
           <div key={item.id}>
             <p>{item.analysis}</p>
           </div>
         ))}
-      </div>
     </div>
   );
 };
