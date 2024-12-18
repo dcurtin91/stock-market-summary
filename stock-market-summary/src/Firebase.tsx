@@ -94,7 +94,6 @@ function RenderSummaries() {
   const [summaries, setSummaries] = useState<Summary[]>([]);
 
 
-
   useEffect(() => {
     const unsubscribe = GetSummaries((summaries) => {
       setSummaries(summaries);
@@ -104,11 +103,6 @@ function RenderSummaries() {
       unsubscribe();
     }
   }, []);
-
-
-
-
-
 
 
   return (

@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import RenderSummaries from './Firebase';
-//import NewsFeed from './FetchNewsSentiment.js';
-import FetchNews from './FetchNews.jsx';
+import NewsFeed from "./NewsFeed";
 import './App.css'
 
   const App: React.FC = () => {
@@ -10,7 +9,7 @@ import './App.css'
         <Router>
           <Routes>
             <Route path="/" element={<RenderSummaries />} />
-            <Route path="/articles" element={<FetchNews />} />
+            <Route path="/news1" element={<NewsFeed />} />
           </Routes>
         </Router>
       </div>
