@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { initializeApp } from 'firebase/app';
 import {
@@ -26,13 +27,13 @@ type Collection = {
   analysis: string;
 };
 
-function GetAnalysis(callback: (analyses: Collection[]) => void): () => void {
+function GetAnalysis(index: number, callback: (analyses: Collection[]) => void): () => void {
+  console.log(index);
   const q = query(
-    collection(db, "ai"),
+    collection(db, `ai-${index + 1}`),
     orderBy("timestamp", "desc"),
     limit(1)
   );
-
   const unsubscribe = onSnapshot(q, (querySnapshot) => {
     const collection = querySnapshot.docs.map((x) => {
       const data = x.data();
@@ -51,20 +52,19 @@ function GetAnalysis(callback: (analyses: Collection[]) => void): () => void {
   return unsubscribe;
 };
 
-
-
 function AiSummary() {
-  const[analyses, setAnalyses] = useState<Collection[]>([]);
+  const { index } = useParams<{ index: string }>();
+  const [analyses, setAnalyses] = useState<Collection[]>([]);
 
   useEffect(() => {
-    const unsubscribe = GetAnalysis((analyses) => {
+    const unsubscribe = GetAnalysis(Number(index), (analyses) => {
       setAnalyses(analyses);
     });
 
     return () => {
       unsubscribe();
-    }
-  }, []);
+    };
+  }, [index]);
 
   return (
     <div className='container'>

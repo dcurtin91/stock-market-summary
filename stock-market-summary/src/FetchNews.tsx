@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import {
@@ -33,9 +34,9 @@ type Collection = {
 };
 
 
-function GetArticles(callback: (articles: Collection[]) => void): () => void {
+function GetArticles(index: number, callback: (articles: Collection[]) => void): () => void {
   const q = query(
-    collection(db, "articles"),
+    collection(db, `articles-${index + 1}`),
     orderBy("timestamp", "desc"),
     limit(1)
   );
@@ -61,18 +62,19 @@ function GetArticles(callback: (articles: Collection[]) => void): () => void {
 
 
 function FetchNews() {
+  const { index } = useParams<{ index: string }>();
   const [articles, setArticles] = useState<Collection[]>([]);
 
 
   useEffect(() => {
-    const unsubscribe = GetArticles((articles) => {
+    const unsubscribe = GetArticles(Number(index), (articles) => {
       setArticles(articles);
     });
 
     return () => {
       unsubscribe();
     }
-  }, []);
+  }, [index]);
 
 
   return (

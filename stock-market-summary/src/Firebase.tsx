@@ -126,12 +126,8 @@ function RenderSummaries() {
                             <div key={index} className="table_data">
                               <p>
                               <a
-                                  href="#"
-                                  onClick={async () => {
-                                    const response = await fetch(`http://localhost:3000/articles?ticker=${stock.ticker}`);
-                                    const data = await response.json();
-                                    console.log(data); // Handle the response as needed
-                                  }}
+                                  href={`/news/${index}`}
+                                  
                                 >
                                   {stock.ticker}
                                 </a>
