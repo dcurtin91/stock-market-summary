@@ -29,7 +29,6 @@ type Collection = {
   feed: Array<{
     title: string;
     url: string;
-    source: string; 
   }>;
 };
 
@@ -77,46 +76,28 @@ function FetchNews() {
 
 
   return (
-    <div className="container">
+    <div className="news_container">
       <div>
-        <div><AiSummary /></div>
+        <h4>Analysis:</h4>
+        <div><AiSummary /></div><br></br><br></br>
         {articles.map((item) => (
           <div key={item.id}>
-            <h4></h4>
-            <div className="table_div">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Recent Articles</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      {Array.isArray(item.feed) && item.feed.length > 0 ? (
-                        <div className="table_grid">
-                          {item.feed.slice(0, 10).map((record, index) => (
-                            <div key={index} className="table_data">
-                                <a href={`${record.url}`}>{record.title}</a>
-                                <p>{record.source}</p>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <p>No trading data available</p>
-                      )}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-
-            </div>
-            
-          </div>
+            <h4>Recent Relevant Articles</h4>
+            {Array.isArray(item.feed) && item.feed.length > 0 ? (
+              <div>
+                {item.feed.map((record, index) => (
+                  <div key={index}>
+                    <a href={`${record.url}`} target="_blank">{record.title}</a><br></br><br></br>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>No trading data available</p>
+            )}
+          </div>  
         ))}
       </div>
-
-    </div>
+    </div >
   );
 }
 
