@@ -79,6 +79,7 @@ function FetchNews() {
 
   return (
     <div className="news_container">
+      <div className='back_button'><a href="/">← Back</a></div>
       <div>
         <h4>Analysis:</h4>
         <div><AiSummary /></div><br></br><br></br>

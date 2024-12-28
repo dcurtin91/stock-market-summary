@@ -36,6 +36,14 @@ body.news {
   background-color: white;
 }
 
+.back_button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 1.5em;
+  color: white !important;
+}
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
