@@ -15,11 +15,11 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #649dff;
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: #f1f1f3;
 }
 
 body {
@@ -28,8 +28,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background-color: black;
-  color: white;
+  color: black;
+  background-color: #f5f5f5;
 }
 
 body.news {
@@ -39,9 +39,11 @@ body.news {
 .back_button {
   position: absolute;
   top: 10px;
-  left: 10px;
-  font-size: 1.5em;
-  color: white !important;
+  left: 30px;
+}
+
+.back_button_link:hover {
+  color: #080808 !important;
 }
 
 h1 {
@@ -65,7 +67,7 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #eff0f4;
 }
 button:focus,
 button:focus-visible {
@@ -78,7 +80,7 @@ button:focus-visible {
     background-color: #ffffff;
   }
   a:hover {
-    color: #747bff;
+    color: #ebebf4;
   }
   button {
     background-color: #f9f9f9;
@@ -105,7 +107,7 @@ ul {
 
 
 .table_data {
-  background-color: rgb(19, 19, 19);
+  background-color: rgb(3, 3, 3);
   color: white;
   border-radius: 5px;
   padding: 10px;

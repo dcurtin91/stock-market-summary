@@ -79,7 +79,7 @@ function FetchNews() {
 
   return (
     <div className="news_container">
-      <div className='back_button'><a href="/">← Back</a></div>
+      <div className='back_button'><a href="/" className='back_button_link'>← Back</a></div>
       <div>
         <h4>Analysis:</h4>
         <div><AiSummary /></div><br></br><br></br>
@@ -87,7 +87,7 @@ function FetchNews() {
           <div key={item.id}>
             <h4>Recent Relevant Articles</h4>
             {Array.isArray(item.feed) && item.feed.length > 0 ? (
-              <div>
+              <div className='table_data'>
                 {item.feed.map((record, index) => (
                   <div key={index}>
                     <a href={`${record.url}`} target="_blank">{record.title}</a><br></br><br></br>
