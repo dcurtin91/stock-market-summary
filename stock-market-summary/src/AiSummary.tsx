@@ -1,5 +1,5 @@
-import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { initializeApp } from 'firebase/app';
 import {
   getFirestore,
@@ -24,11 +24,14 @@ const db = getFirestore(app);
 
 type Collection = {
   id: string;
-  analysis: string;
+  analysis: {
+    point_1: string;
+    point_2: string;
+    point_3: string;
+  };
 };
 
-function GetAnalysis(index: number, callback: (analyses: Collection[]) => void): () => void {
-  console.log(index);
+function GetAnalysis(index: number, callback: (analysis: Collection[]) => void): () => void {
   const q = query(
     collection(db, `ai-${index + 1}`),
     orderBy("timestamp", "desc"),
@@ -39,44 +42,47 @@ function GetAnalysis(index: number, callback: (analyses: Collection[]) => void):
       const data = x.data();
       return {
         id: x.id,
-        analysis: data.analysis || "",
+        analysis: data.analysis || [],
       };
     });
 
     if (typeof callback === "function") {
       callback(collection);
-    };
-
+    }
   });
-
   return unsubscribe;
 };
 
 function AiSummary() {
   const { index } = useParams<{ index: string }>();
-  const [analyses, setAnalyses] = useState<Collection[]>([]);
+  const [analysis, setAnalysis] = useState<Collection[]>([]);
 
-  useEffect(() => {
-    const unsubscribe = GetAnalysis(Number(index), (analyses) => {
-      setAnalyses(analyses);
-    });
+   useEffect(() => {
+      const unsubscribe = GetAnalysis(Number(index), (analysis) => {
+        setAnalysis(analysis);
+        console.log(analysis);
+      });
+  
+      return () => {
+        unsubscribe();
+      }
+    }, [index]);;
 
-    return () => {
-      unsubscribe();
-    };
-  }, [index]);
 
   return (
     <div className='container'>
-        {analyses.map((item) => (
-          <div key={item.id}>
-            <p>{item.analysis}</p>
-          </div>
-        ))}
+      {analysis.map((item, index) => (
+        <div key={index}>
+          <p>{item.analysis?.point_1}</p>
+          <p>{item.analysis?.point_2}</p>
+          <p>{item.analysis?.point_3}</p>
+        </div>
+      ))}
     </div>
   );
 };
 
 export default AiSummary;
+
 
 
