@@ -37,6 +37,7 @@ function GetAnalysis(index: number, callback: (analysis: Collection[]) => void):
     orderBy("timestamp", "desc"),
     limit(1)
   );
+
   const unsubscribe = onSnapshot(q, (querySnapshot) => {
     const collection = querySnapshot.docs.map((x) => {
       const data = x.data();
@@ -60,7 +61,6 @@ function AiSummary() {
    useEffect(() => {
       const unsubscribe = GetAnalysis(Number(index), (analysis) => {
         setAnalysis(analysis);
-        console.log(analysis);
       });
   
       return () => {
