@@ -10,6 +10,7 @@ import {
   query
 } from "firebase/firestore";
 import AiSummary from "./AiSummary";
+import TickerInfo from './TickerInfo';
 
 
 const firebaseConfig = {
@@ -81,6 +82,7 @@ function FetchNews() {
     <div className="news_container">
       <div className='back_button'><a href="/" className='back_button_link'>← Back</a></div>
       <div>
+        <div><TickerInfo /></div>
         <h4>Analysis:</h4>
         <div><AiSummary /></div><br></br><br></br>
         {articles.map((item) => (
