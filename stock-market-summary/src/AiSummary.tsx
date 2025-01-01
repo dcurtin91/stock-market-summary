@@ -73,6 +73,7 @@ function AiSummary() {
     <div className='container'>
       {analysis.map((item, index) => (
         <div key={index}>
+          <p>Analysis: </p>
           <p>{item.analysis?.point_1}</p>
           <p>{item.analysis?.point_2}</p>
           <p>{item.analysis?.point_3}</p>

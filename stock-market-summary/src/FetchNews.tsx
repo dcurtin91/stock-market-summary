@@ -83,11 +83,14 @@ function FetchNews() {
       <div className='back_button'><a href="/" className='back_button_link'>← Back</a></div>
       <div>
         <div><TickerInfo /></div>
-        <h4>Analysis:</h4>
-        <div><AiSummary /></div><br></br><br></br>
+        
         {articles.map((item) => (
           <div key={item.id}>
-            <h4>Recent Relevant Articles</h4>
+            {Array.isArray(item.feed) && item.feed.length > 0 ? (
+              <div><AiSummary /></div>
+            ) : (
+              ''
+            )}
             {Array.isArray(item.feed) && item.feed.length > 0 ? (
               <div className='table_data'>
                 {item.feed.map((record, index) => (
@@ -97,7 +100,7 @@ function FetchNews() {
                 ))}
               </div>
             ) : (
-              <p>No trading data available</p>
+              ''
             )}
           </div>  
         ))}
