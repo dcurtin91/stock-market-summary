@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import RenderSummaries from './Firebase';
+import RenderSummaries from "./RenderSummaries";
 import FetchNews from "./FetchNews";
 import './App.css'
 

@@ -88,7 +88,7 @@ function ConvertString(value: string) {
   );
 }
 
-function RenderSummaries() {
+function RenderSummariesOld() {
   const [summaries, setSummaries] = useState<Summary[]>([]);
 
 
@@ -203,7 +203,7 @@ function RenderSummaries() {
   );
 }
 
-export default RenderSummaries;
+export default RenderSummariesOld;
 
 
 {/* <h2>Summary:</h2>
