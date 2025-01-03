@@ -81,44 +81,27 @@ function TopGainers() {
 
 
   return (
-      <div>
-        {topGainers.map((item) => (
-          <div key={item.id}>
-            <div className="table_div">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Top Gainers</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      {Array.isArray(item.top_gainers) && item.top_gainers.length > 0 ? (
-                        <div className="table_grid">
-                          {item.top_gainers.slice(0, 10).map((stock, index) => (
-                            <div key={index} className="table_data">
-                              <p><a href={`https://finance.yahoo.com/quote/${stock.symbol}`} target="_blank" rel="noopener noreferrer">{stock.name}</a></p>
-                              <p>{stock.symbol}</p>
-                              <p>Price: ${stock.price}</p>
-                              <p>Change Percentage: {stock.changesPercentage}</p>
-                              <p>Total Change Amount: ${stock.change.toLocaleString()}</p>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <p>Missing Data</p>
-                      )}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-
+    <div>
+      {topGainers.map((item) => (
+        <div key={item.id}>
+          {Array.isArray(item.top_gainers) && item.top_gainers.length > 0 ? (
+            <div className="table_grid">
+              {item.top_gainers.slice(0, 10).map((stock, index) => (
+                <div key={index} className="table_data">
+                  <p><a href={`https://finance.yahoo.com/quote/${stock.symbol}`} target="_blank" rel="noopener noreferrer">{stock.name}</a></p>
+                  <p>{stock.symbol}</p>
+                  <p>Price: ${stock.price}</p>
+                  <p>Change Percentage: {stock.changesPercentage}</p>
+                  <p>Total Change Amount: ${stock.change.toLocaleString()}</p>
+                </div>
+              ))}
             </div>
-           
-          </div>
-        ))}
-      </div>
+          ) : (
+            <p>Missing Data</p>
+          )}
+        </div>
+      ))}
+    </div>
   );
 }
 
