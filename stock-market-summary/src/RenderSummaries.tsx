@@ -1,10 +1,12 @@
 import TopGainers from "./TopGainers";
 import TopLosers from "./TopLosers";
+import MostActive from "./MostActive";
 
 function RenderSummaries() {
   return (
     <div className="container">
       <h2>Stock Market Summaries</h2>
+      <MostActive />
       <div className="table_div">
         <table>
           <thead>

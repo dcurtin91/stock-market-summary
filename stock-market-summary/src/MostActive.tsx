@@ -63,7 +63,11 @@ function GetMostTraded(callback: (stocks: Collection[]) => void): () => void {
   return unsubscribe;
 }
 
-
+function ConvertString(value: string) {
+  return (
+    parseFloat(value)
+  );
+}
 
 function MostActive() {
   const [mostActive, setMostActive] = useState<Collection[]>([]);
@@ -84,21 +88,50 @@ function MostActive() {
     <div>
       {mostActive.map((item) => (
         <div key={item.id}>
-          {Array.isArray(item.most_actively_traded) && item.most_actively_traded.length > 0 ? (
-            <div className="table_grid">
-              {item.most_actively_traded.slice(0, 10).map((stock, index) => (
-                <div key={index} className="table_data">
-                  <p><a href={`https://finance.yahoo.com/quote/${stock.symbol}`} target="_blank" rel="noopener noreferrer">{stock.name}</a></p>
-                  <p>{stock.symbol}</p>
-                  <p>Price: ${stock.price}</p>
-                  <p>Change Percentage: {stock.changesPercentage}</p>
-                  <p>Total Change Amount: ${stock.change.toLocaleString()}</p>
-                </div>
-              ))}
+          <div className="table_div">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Most Actively Traded Stocks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      {Array.isArray(item.most_actively_traded) && item.most_actively_traded.length > 0 ? (
+                        <div className="table_grid">
+                          {item.most_actively_traded.slice(0, 4).map((stock, index) => (
+                            <div key={index} className="table_data">
+                              <p>
+                              <a
+                                  href={`/news/${index}`}
+                                  
+                                >
+                                  {stock.name}
+                                </a>
+                              </p>
+                              <p>{stock.symbol}</p>
+                              <p>${stock.price}</p>
+                              <p>
+                                {ConvertString(stock.change) > 0 ? (
+                                  <span className="up_arrow">⬆</span>
+                                ) : (
+                                  <span className="down_arrow">⬇</span>
+                                )}
+                              </p>
+                              <p>{stock.changesPercentage}%</p>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p>Missing Data</p>
+                      )}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
             </div>
-          ) : (
-            <p>Missing Data</p>
-          )}
         </div>
       ))}
     </div>
