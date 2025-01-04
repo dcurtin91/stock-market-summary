@@ -24,10 +24,13 @@ const db = getFirestore(app);
 
 type Collection = {
   id: string;
-  name: string;
+  timestamp: string;
+  ticker_info: Array<{
+  companyName: string;
   symbol: string;
   sector: string;
   description: string;
+  }>;
 };
 
 function GetEntry(index: number, callback: (info: Collection[]) => void): () => void {
@@ -39,19 +42,17 @@ function GetEntry(index: number, callback: (info: Collection[]) => void): () => 
 
   const unsubscribe = onSnapshot(q, (querySnapshot) => {
     console.log("Query Snapshot:", querySnapshot.docs);
-    const collection = querySnapshot.docs.map((x) => {
+    const tickerData = querySnapshot.docs.map((x) => {
       const data = x.data();
       return {
         id: x.id,
-        name: data.Name || "",
-        symbol: data.Symbol || "",
-        sector: data.Sector || "",
-        description: data.Description || "",
+        timestamp: data.timestamp || "",
+        ticker_info: data.ticker_info || [],
       };
     });
 
     if (typeof callback === "function") {
-      callback(collection);
+      callback(tickerData);
     }
   });
   return unsubscribe;
@@ -62,8 +63,8 @@ function TickerInfo() {
   const [info, setInfo] = useState<Collection[]>([]);
 
    useEffect(() => {
-      const unsubscribe = GetEntry(Number(index), (info) => {
-        setInfo(info);
+      const unsubscribe = GetEntry(Number(index), (fetchedInfo) => {
+        setInfo(fetchedInfo);
       });
   
       return () => {
@@ -76,7 +77,7 @@ function TickerInfo() {
     <div className='ticker-info'>
       {info.map((item) => (
         <div key={item.id}>
-          <h1>{item.name}</h1>
+          <h1>{item.companyName}</h1>
           <h2>{item.symbol}</h2>
           <h3>{item.sector}</h3>
          {item.description.length > 8 ? (
