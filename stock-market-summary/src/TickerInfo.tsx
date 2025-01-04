@@ -77,14 +77,14 @@ function TickerInfo() {
     <div className='ticker-info'>
       {info.map((item) => (
         <div key={item.id}>
-          <h1>{item.companyName}</h1>
-          <h2>{item.symbol}</h2>
-          <h3>{item.sector}</h3>
-         {item.description.length > 8 ? (
-            <p>{item.description}</p>
-          ) : (
-            ''
-          )}
+          {item.ticker_info.map((ticker) => (
+            <div key={ticker.symbol}>
+              <h3>{ticker.companyName}</h3>
+              <p>{ticker.symbol}</p>
+              <p>{ticker.sector}</p>
+              <p>{ticker.description}</p>
+            </div>
+          ))}
         </div>
       ))}
      
