@@ -1,6 +1,7 @@
 import TopGainers from "./TopGainers";
 import TopLosers from "./TopLosers";
 import MostActive from "./MostActive";
+import BubbleChart from "./BubbleChart";
 
 function RenderSummaries() {
   return (
@@ -30,6 +31,7 @@ function RenderSummaries() {
           
         </table>
       </div>
+      <BubbleChart />
     </div>
   );
 };

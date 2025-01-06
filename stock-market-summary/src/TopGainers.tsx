@@ -91,7 +91,7 @@ function TopGainers() {
                   <p><a href={`https://finance.yahoo.com/quote/${stock.symbol}`} target="_blank" rel="noopener noreferrer">{stock.name}</a></p>
                   <p>{stock.symbol}</p>
                   <p>Price: ${stock.price}</p>
-                  <p>Change Percentage: {stock.changesPercentage}</p>
+                  <p>Change Percentage: {stock.changesPercentage}%</p>
                   <p>Total Change Amount: ${stock.change.toLocaleString()}</p>
                 </div>
               ))}
