@@ -1,26 +1,12 @@
 import { useState, useEffect } from "react";
-import { initializeApp } from "firebase/app";
+import { db } from "./Firebase";
 import {
-    getFirestore,
-    collection,
-    orderBy,
-    limit,
-    onSnapshot,
-    query
+  collection,
+  orderBy,
+  limit,
+  onSnapshot,
+  query
 } from "firebase/firestore";
-
-
-const firebaseConfig = {
-    authDomain: "stock-market-summarizer.firebaseapp.com",
-    projectId: "stock-market-summarizer",
-    storageBucket: "stock-market-summarizer.appspot.com",
-    messagingSenderId: "219851290952",
-    appId: "1:219851290952:web:bad6129a8901a5e4e61b7d",
-    measurementId: "G-B9BJC82143"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
 
 type Collection = {
