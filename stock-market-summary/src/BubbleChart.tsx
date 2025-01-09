@@ -11,27 +11,43 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, Tooltip, Legend);
 
-const BubbleChart = () => {
-  const data = {
-    datasets: [
+type BubbleChartProps = {
+  data: { x: number; y: number; r: number; stock: string; price: number }[];
+};
+
+// const BubbleChart = () => {
+//   const data = {
+//     datasets: [
      
+//       {
+//         label: 'Top Gainers',
+//         data: [
+//           { x: 177.5687, y: 0.614, r: 5, stock: 'Stock C' },
+//           { x: 146.729, y: 1.57, r: 20, stock: 'Stock D' },
+//         ],
+//         backgroundColor: 'rgba(75, 192, 192, 0.6)',
+//         borderColor: 'rgba(75, 192, 192, 1)',
+//       },
+//       {
+//         label: 'Top Losers',
+//         data: [
+//           { x: 3, y: 1500, r: 10, stock: 'Stock E' },
+//           { x: 7, y: 2500, r: 18, stock: 'Stock F' },
+//         ],
+//         backgroundColor: 'rgba(255, 99, 132, 0.6)',
+//         borderColor: 'rgba(255, 99, 132, 1)',
+//       },
+//     ],
+//   };
+
+const BubbleChart: React.FC<BubbleChartProps> = ({ data }) => {
+  const chartData = {
+    datasets: [
       {
         label: 'Top Gainers',
-        data: [
-          { x: 177.5687, y: 0.614, r: 5, stock: 'Stock C' },
-          { x: 146.729, y: 1.57, r: 20, stock: 'Stock D' },
-        ],
+        data: data,
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
         borderColor: 'rgba(75, 192, 192, 1)',
-      },
-      {
-        label: 'Top Losers',
-        data: [
-          { x: 3, y: 1500, r: 10, stock: 'Stock E' },
-          { x: 7, y: 2500, r: 18, stock: 'Stock F' },
-        ],
-        backgroundColor: 'rgba(255, 99, 132, 0.6)',
-        borderColor: 'rgba(255, 99, 132, 1)',
       },
     ],
   };
@@ -77,7 +93,7 @@ const BubbleChart = () => {
     <div style={{ width: '100%', margin: '0 auto' }}>
       <h2>Stock Market Bubble Chart</h2>
       <p>Large Circles = Market Most Active</p>
-      <Bubble data={data} options={options} />
+      <Bubble data={chartData} options={options} />
     </div>
   );
 };
