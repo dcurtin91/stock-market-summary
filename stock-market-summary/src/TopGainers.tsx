@@ -7,7 +7,6 @@ import {
   onSnapshot,
   query
 } from "firebase/firestore";
-import BubbleChart from './BubbleChart';
 
 
 type Collection = {
@@ -87,15 +86,7 @@ function TopGainers() {
           )}
         </div>
       ))}
-      <BubbleChart data={topGainers.flatMap(item => 
-        item.top_gainers.map(stock => ({
-          x: parseFloat(stock.price),
-          y: parseFloat(stock.changesPercentage),
-          r: parseFloat(stock.change),
-          stock: stock.symbol,
-          price: parseFloat(stock.price)
-        }))
-      )} />
+    
     </div>
   );
 }
