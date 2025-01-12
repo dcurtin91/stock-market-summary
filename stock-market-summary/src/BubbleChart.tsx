@@ -11,8 +11,10 @@ import {
   Legend,
 } from 'chart.js';
 import { collection, onSnapshot, orderBy, query, limit } from 'firebase/firestore';
+import zoomPlugin from 'chartjs-plugin-zoom';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, Tooltip, Legend);
+ChartJS.register(zoomPlugin);
 
 type Collection = {
   id: string;
@@ -25,6 +27,31 @@ type Collection = {
     name: string;
   }>;
 };
+
+type Collection2 = {
+  id: string;
+  timestamp: string;
+  top_losers: Array<{
+    symbol: string;
+    price: string;
+    change: string;
+    changesPercentage: string;
+    name: string;
+  }>;
+};
+
+type Collection3 = {
+  id: string;
+  timestamp: string;
+  most_actively_traded: Array<{
+    symbol: string;
+    price: string;
+    change: string;
+    changesPercentage: string;
+    name: string;
+  }>;
+};
+
 
 function GetGainers(callback: (gainers: Collection[]) => void): () => void {
   const q = query(
@@ -51,11 +78,60 @@ function GetGainers(callback: (gainers: Collection[]) => void): () => void {
   return unsubscribe;
 }
 
+function GetLosers(callback: (losers: Collection2[]) => void): () => void {
+  const q = query(
+    collection(db, 'top-losers'),
+    orderBy('timestamp', 'desc'),
+    limit(1)
+  );
 
+  const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    const losersData = querySnapshot.docs.map((x) => {
+      const data = x.data();
+      return {
+        id: x.id,
+        top_losers: data.top_losers || [],
+        timestamp: data.timestamp || '',
+      };
+    });
 
+    if (typeof callback === 'function') {
+      callback(losersData);
+    }
+  });
+
+  return unsubscribe;
+}
+
+function GetMostTraded(callback: (stocks: Collection3[]) => void): () => void {
+  const q = query(
+    collection(db, "most-actively-traded"),
+    orderBy("timestamp", "desc"),
+    limit(1)
+  );
+
+  const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    const stocksData = querySnapshot.docs.map((x) => {
+      const data = x.data();
+      return {
+        id: x.id,
+        most_actively_traded: data.most_actively_traded || [],
+        timestamp: data.timestamp || "",
+      };
+    });
+
+    if (typeof callback === "function") {
+      callback(stocksData);
+    }
+  });
+
+  return unsubscribe;
+}
 
 const BubbleChart = () => {
   const [topGainers, setTopGainers] = useState<Collection[]>([]);
+  const [topLosers, setTopLosers] = useState<Collection2[]>([]);
+  const [mostActive, setMostActive] = useState<Collection3[]>([]);
 
   useEffect(() => {
     const unsubscribe = GetGainers((fetchedGainers) => {
@@ -65,12 +141,44 @@ const BubbleChart = () => {
     return unsubscribe;
   }, []);
 
+  useEffect(() => {
+    const unsubscribe = GetLosers((fetchedLosers) => {
+      setTopLosers(fetchedLosers);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = GetMostTraded((fetchedStocks) => {
+      setMostActive(fetchedStocks);
+    });
+
+    return () => {
+      unsubscribe();
+    }
+  }, []);
+
+  const activelyTraded = mostActive.flatMap((stock) =>
+    stock.most_actively_traded.map((s) => s.symbol)
+  );
+
+
   const gainersData = topGainers.flatMap((gainer) =>
     gainer.top_gainers.map((stock) => ({
-      x: parseFloat(stock.changesPercentage), // Changes percentage
-      y: parseFloat(stock.change),           // Price change
-      r: 10,                                 // Size of the bubble
-      stock: stock.symbol,                   // Stock symbol (for tooltip)
+      x: parseFloat(stock.changesPercentage), 
+      y: parseFloat(stock.change),          
+      r: activelyTraded.includes(stock.symbol) ? 13 : 5,                                 
+      stock: stock.symbol,                   
+    }))
+  );
+
+  const losersData = topLosers.flatMap((loser) =>
+    loser.top_losers.map((stock) => ({
+      x: parseFloat(stock.changesPercentage), 
+      y: parseFloat(stock.change),          
+      r: activelyTraded.includes(stock.symbol) ? 13 : 5,                                 
+      stock: stock.symbol,                   
     }))
   );
 
@@ -85,10 +193,7 @@ const BubbleChart = () => {
       },
       {
         label: 'Top Losers',
-        data: [
-          { x: 3, y: 1500, r: 10, stock: 'Stock E' },
-          { x: 7, y: 2500, r: 18, stock: 'Stock F' },
-        ],
+        data: losersData,
         backgroundColor: 'rgba(255, 99, 132, 0.6)',
         borderColor: 'rgba(255, 99, 132, 1)',
       },
@@ -113,6 +218,23 @@ const BubbleChart = () => {
       legend: {
         position: 'top' as const,
       },
+      zoom: {
+        pan: {
+          enabled: true,
+          mode: 'xy' as 'xy',
+        },
+        zoom: {
+          wheel: {
+            enabled: true,
+            speed: 0.01,
+          },
+          pinch: {
+            enabled: true
+          },
+          mode: 'xy' as 'xy',
+         
+        }
+      },
     },
     scales: {
       x: {
@@ -128,8 +250,8 @@ const BubbleChart = () => {
           display: true,
           text: 'Price Change ($)',
         },
-        min: -50.00,
-        max: 50.00,
+        min: -10.00,
+        max: 10.00,
       },
     },
   };
