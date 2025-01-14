@@ -104,7 +104,10 @@ ul {
   content: '-$';
 }
 
-
+.graph_div {
+  width: 100%;
+  height: auto;
+}
 
 .table_data {
   background-color: rgb(3, 3, 3);

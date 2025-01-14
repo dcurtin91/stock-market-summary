@@ -7,7 +7,7 @@ function RenderSummaries() {
   return (
     <div className="container">
       <h2>Stock Market Summaries</h2>
-      <MostActive />
+      <div className="graph_div"><BubbleChart /></div>
       <div className="table_div">
         <table>
           <thead>
@@ -31,7 +31,7 @@ function RenderSummaries() {
           
         </table>
       </div>
-      <BubbleChart />
+      <MostActive />
     </div>
   );
 };

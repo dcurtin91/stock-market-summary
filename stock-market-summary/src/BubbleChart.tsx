@@ -165,7 +165,7 @@ const BubbleChart = () => {
 
 
   const gainersData = topGainers.flatMap((gainer) =>
-    gainer.top_gainers.map((stock) => ({
+    gainer.top_gainers.slice(0, 10).map((stock) => ({
       x: parseFloat(stock.changesPercentage), 
       y: parseFloat(stock.change),          
       r: activelyTraded.includes(stock.symbol) ? 13 : 5,                                 
@@ -174,7 +174,7 @@ const BubbleChart = () => {
   );
 
   const losersData = topLosers.flatMap((loser) =>
-    loser.top_losers.map((stock) => ({
+    loser.top_losers.slice(0, 10).map((stock) => ({
       x: parseFloat(stock.changesPercentage), 
       y: parseFloat(stock.change),          
       r: activelyTraded.includes(stock.symbol) ? 13 : 5,                                 
@@ -242,23 +242,22 @@ const BubbleChart = () => {
           display: true,
           text: 'Changes Percentage (%)',
         },
-        min: -100,
-        max: 200,
+        min: -500,
+        max: 500,
       },
       y: {
         title: {
           display: true,
           text: 'Price Change ($)',
         },
-        min: -10.00,
-        max: 10.00,
+        min: -40.00,
+        max: 40.00,
       },
     },
   };
 
   return (
     <div style={{ width: '100%', margin: '0 auto' }}>
-      <h2>Stock Market Bubble Chart</h2>
       <p>Large Circles = Market Most Active</p>
       <Bubble data={data} options={options} />
     </div>
