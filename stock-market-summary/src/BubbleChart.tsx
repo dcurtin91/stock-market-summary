@@ -173,6 +173,7 @@ const BubbleChart = () => {
     }))
   );
 
+
   const losersData = topLosers.flatMap((loser) =>
     loser.top_losers.slice(0, 10).map((stock) => ({
       x: parseFloat(stock.changesPercentage), 
@@ -180,6 +181,22 @@ const BubbleChart = () => {
       r: activelyTraded.includes(stock.symbol) ? 13 : 5,                                 
       stock: stock.symbol,                   
     }))
+  );
+
+  const maxPercentage = topGainers.map((gainer) => 
+    gainer.top_gainers.map((stock) => parseFloat(stock.changesPercentage) + 10)
+  );
+
+  const minPercentage = topLosers.map((loser) => 
+    loser.top_losers.map((stock) => parseFloat(stock.changesPercentage) - 10)
+  );
+
+  const maxChange = topGainers.map((gainer) =>
+    gainer.top_gainers.map((stock) => parseFloat(stock.change) + 10)
+  );
+
+  const minChange = topLosers.map((loser) =>
+    loser.top_losers.map((stock) => parseFloat(stock.change) - 10)
   );
 
   const data = {
@@ -209,9 +226,9 @@ const BubbleChart = () => {
       tooltip: {
         callbacks: {
           label: function (context: any) {
-            const { x, y, r } = context.raw;
+            const { x, y } = context.raw;
             const stock = context.raw.stock;
-            return `Stock: ${stock}\nChanges Percentage: ${x}%\nPrice Change: $${y}\nSize: ${r}`;
+            return [`Stock: ${stock}`, `Changes Percentage: ${x}%`, `Price Change: $${y}`]; 
           },
         },
       },
@@ -242,23 +259,26 @@ const BubbleChart = () => {
           display: true,
           text: 'Changes Percentage (%)',
         },
-        min: -500,
-        max: 500,
+        min: Math.min(...minPercentage.flat()),
+        max: Math.max(...maxPercentage.flat()),
       },
       y: {
         title: {
           display: true,
           text: 'Price Change ($)',
         },
-        min: -40.00,
-        max: 40.00,
+        min: Math.min(...minChange.flat()),
+        max: Math.max(...maxChange.flat()),
       },
+    },
+    onHover: (event: any, chartElement: any) => {
+      event.native.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
     },
   };
 
   return (
     <div style={{ width: '100%', margin: '0 auto' }}>
-      <p>Large Circles = Market Most Active</p>
+      <p>Larger Circles = Daily Most Actively Traded</p>
       <Bubble data={data} options={options} />
     </div>
   );
