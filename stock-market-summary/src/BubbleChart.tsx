@@ -218,8 +218,6 @@ const BubbleChart = () => {
   };
 
 
-
-  // Chart options
   const options = {
     responsive: true,
     plugins: {
