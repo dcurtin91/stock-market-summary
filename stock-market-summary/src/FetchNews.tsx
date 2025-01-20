@@ -35,9 +35,9 @@ type Collection = {
 };
 
 
-function GetArticles(index: number, callback: (articles: Collection[]) => void): () => void {
+function GetArticles(ticker: string, callback: (articles: Collection[]) => void): () => void {
   const q = query(
-    collection(db, `articles-${index + 1}`),
+    collection(db, `${ticker}`),
     orderBy("timestamp", "desc"),
     limit(1)
   );
@@ -63,19 +63,19 @@ function GetArticles(index: number, callback: (articles: Collection[]) => void):
 
 
 function FetchNews() {
-  const { index } = useParams<{ index: string }>();
+  const { ticker } = useParams<{ ticker: string }>();
   const [articles, setArticles] = useState<Collection[]>([]);
 
 
   useEffect(() => {
-    const unsubscribe = GetArticles(Number(index), (articles) => {
+    const unsubscribe = GetArticles(String(ticker), (articles) => {
       setArticles(articles);
     });
 
     return () => {
       unsubscribe();
     }
-  }, [index]);
+  }, [ticker]);
 
 
   return (

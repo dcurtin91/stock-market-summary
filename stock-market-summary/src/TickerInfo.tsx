@@ -33,9 +33,9 @@ type Collection = {
   }>;
 };
 
-function GetEntry(index: number, callback: (info: Collection[]) => void): () => void {
+function GetEntry(ticker: string, callback: (info: Collection[]) => void): () => void {
   const q = query(
-    collection(db, `ticker-info-${index + 1}`),
+    collection(db, `ticker-info-${ticker}`),
     orderBy("timestamp", "desc"),
     limit(1)
   );
@@ -59,18 +59,18 @@ function GetEntry(index: number, callback: (info: Collection[]) => void): () => 
 };
 
 function TickerInfo() {
-  const { index } = useParams<{ index: string }>();
+  const { ticker } = useParams<{ ticker: string }>();
   const [info, setInfo] = useState<Collection[]>([]);
 
    useEffect(() => {
-      const unsubscribe = GetEntry(Number(index), (fetchedInfo) => {
+      const unsubscribe = GetEntry(String(ticker), (fetchedInfo) => {
         setInfo(fetchedInfo);
       });
   
       return () => {
         unsubscribe();
       }
-    }, [index]);;
+    }, [ticker]);;
 
 
   return (

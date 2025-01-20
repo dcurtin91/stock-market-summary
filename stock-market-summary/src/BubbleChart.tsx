@@ -272,6 +272,18 @@ const BubbleChart = () => {
     onHover: (event: any, chartElement: any) => {
       event.native.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
     },
+    onClick: (_event: any, chartElement: any) => {
+      if (chartElement.length > 0) {
+        const index = chartElement[0].index;
+        const datasetIndex = chartElement[0].datasetIndex;
+        const stock = data.datasets[datasetIndex].data[index] as any;
+        const url = `https://stock-market-summary-server-b48b85a337b0.herokuapp.com/${stock.stock}`;
+        fetch(url)
+          .then(response => response.json())
+          .then(data => console.log(data))
+          .catch(error => console.error('Error:', error));
+      }
+    },
   };
 
   return (

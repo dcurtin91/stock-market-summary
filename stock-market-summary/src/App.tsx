@@ -9,7 +9,7 @@ import './App.css'
         <Router>
           <Routes>
             <Route path="/" element={<RenderSummaries />} />
-            <Route path="/news/:index" element={<FetchNews />} />
+            <Route path="/:ticker" element={<FetchNews />} />
           </Routes>
         </Router>
       </div>
