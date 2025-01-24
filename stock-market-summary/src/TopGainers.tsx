@@ -64,6 +64,17 @@ function TopGainers() {
     }
   }, []);
 
+  const gainerRedirect = (symbol: string) => {
+    const url = `https://stock-market-summary-server-b48b85a337b0.herokuapp.com/${symbol}`;
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            console.log(data); 
+            window.location.href = `/${symbol}`;
+          })
+          .catch(error => console.error('Error:', error));
+  };
+
 
   return (
     <div>
@@ -73,7 +84,7 @@ function TopGainers() {
             <div className="table_grid">
               {item.top_gainers.slice(0, 10).map((stock, index) => (
                 <div key={index} className="table_data">
-                  <p><a href={`https://finance.yahoo.com/quote/${stock.symbol}`} target="_blank" rel="noopener noreferrer">{stock.name}</a></p>
+                  <p className="stock_link"><a onClick={() => gainerRedirect(stock.symbol)}>{stock.name}</a></p>
                   <p>{stock.symbol}</p>
                   <p>Price: ${stock.price}</p>
                   <p>Change Percentage: {stock.changesPercentage}%</p>

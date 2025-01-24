@@ -142,3 +142,7 @@ ul {
 .down_arrow {
   color: red;
 }
+
+.stock_link:hover {
+  cursor: pointer;
+}
