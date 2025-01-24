@@ -280,7 +280,10 @@ const BubbleChart = () => {
         const url = `https://stock-market-summary-server-b48b85a337b0.herokuapp.com/${stock.stock}`;
         fetch(url)
           .then(response => response.json())
-          .then(data => console.log(data))
+          .then(data => {
+            console.log(data); 
+            window.location.href = `/${stock.stock}`;
+          })
           .catch(error => console.error('Error:', error));
       }
     },
