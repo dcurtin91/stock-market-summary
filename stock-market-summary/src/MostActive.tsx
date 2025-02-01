@@ -83,7 +83,7 @@ function MostActive() {
     <div>
       {mostActive.map((item) => (
         <div key={item.id}>
-          <div className="table_div">
+          <div className="most_active">
               <table>
                 <thead>
                   <tr>
@@ -94,8 +94,8 @@ function MostActive() {
                   <tr>
                     <td>
                       {Array.isArray(item.most_actively_traded) && item.most_actively_traded.length > 0 ? (
-                        <div className="table_grid">
-                          {item.most_actively_traded.slice(0, 4).map((stock, index) => (
+                        <div className="active_grid">
+                          {item.most_actively_traded.slice(0, 10).map((stock, index) => (
                             <div key={index} className="table_data">
                               <p className="stock_link"><a onClick={() => activeRedirect(stock.symbol)}>{stock.name}</a></p>
                               <p>{stock.symbol}</p>
