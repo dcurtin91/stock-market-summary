@@ -86,11 +86,11 @@ function TopLosers() {
                         <div className="table_grid">
                             {item.top_losers.slice(0, 10).map((stock, index) => (
                                 <div key={index} className="table_data">
-                                    <p className="stock_link"><a onClick={() => loserRedirect(stock.symbol)} target="_blank" rel="noopener noreferrer">{stock.name}</a></p>
-                                    <p>{stock.symbol}</p>
-                                    <p>Price: ${stock.price}</p>
-                                    <p>Change Percentage: {stock.changesPercentage}%</p>
-                                    <p>Total Change Amount: ${stock.change.toLocaleString()}</p>
+                                    <p className="stock_link"><a onClick={() => loserRedirect(stock.symbol)} target="_blank" rel="noopener noreferrer">{stock.symbol}</a></p>
+                                    {/* <p>{stock.symbol}</p> */}
+                                    {/* <p>Price: ${stock.price}</p> */}
+                                    <p>{stock.changesPercentage}%</p>
+                                    {/* <p>Total Change Amount: ${stock.change.toLocaleString()}</p> */}
                                 </div>
                             ))}
                         </div>
