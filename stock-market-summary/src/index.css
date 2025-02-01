@@ -106,19 +106,42 @@ ul {
   justify-content: center;
   align-items: center;
   text-align: center;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.down_arrow {
+  color: red;
+}
+
+.full-width-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.graph_div {
+  width: 100%;
+}
+
+.half-width {
+  width: 50%;
+  vertical-align: top;
+}
+
+.most_active {
+  margin-top: 40px;
 }
 
 .negativeCurr::before {
   content: '-$';
 }
 
-.graph_div {
-  width: 100%;
-  height: auto;
+.stock_link:hover {
+  cursor: pointer;
 }
 
-.most_active {
-  margin-top: 40px;
+.summaries {
+  width: 100%;
 }
 
 .table_data {
@@ -132,12 +155,8 @@ ul {
   flex-direction: column;
   text-align: center;
   margin-top: 40px;
+  width: 100%;
 }
-
-/* .table_grid {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-} */
 
 .ticker-info {
   color: black;
@@ -145,12 +164,4 @@ ul {
 
 .up_arrow {
   color: rgb(19, 197, 19);
-}
-
-.down_arrow {
-  color: red;
-}
-
-.stock_link:hover {
-  cursor: pointer;
 }
