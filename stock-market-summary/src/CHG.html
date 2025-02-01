@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fan Form</title>
+</head>
+<body>
+
+  <form action="https://app.opendate.io/api/v2/public/fans" method="POST">
+    
+    <input type="hidden" name="fan[venue_id]" value="a9d98f3a-4cb1-4c0e-abf8-998e4da15afe" />
+    <input type="hidden" name="fan[subscribe_to_marketing]" value="true" />
+    <input type="hidden" name="fan[first_name]" id="hidden-first-name" value="" />
+    <input type="hidden" name="fan[last_name]" id="hidden-last-name" value="" />
+    <input type="hidden" name="fan[phone]" id="hidden-phone" value="" />
+    <input type="hidden" name="fan[email]" id="hidden-email" value="" />
+    <input type="hidden" name="redirect_url" value="" /> <!-- Redirect URL needs to be specified -->
+
+    
+    <div>
+      <label for="chg-first-name">First Name</label>
+      <input type="text" id="chg-first-name" name="fan[first_name]" required />
+    </div>
+
+    <div>
+      <label for="chg-last-name">Last Name</label>
+      <input type="text" id="chg-last-name" name="fan[last_name]" required />
+    </div>
+
+    <div>
+      <label for="chg-phone-number">Phone Number</label>
+      <input type="tel" id="chg-phone-number" name="fan[phone]" required />
+    </div>
+
+    <div>
+      <label for="chg-email">Email</label>
+      <input type="email" id="chg-email" name="fan[email]" required />
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const firstNameInput = document.getElementById("chg-first-name");
+      const lastNameInput = document.getElementById("chg-last-name");
+      const phoneInput = document.getElementById("chg-phone-number");
+      const emailInput = document.getElementById("chg-email");
+      const hiddenFirstName = document.getElementById("hidden-first-name");
+      const hiddenLastName = document.getElementById("hidden-last-name");
+      const hiddenEmail = document.getElementById("hidden-email");
+      const hiddenPhone = document.getElementById("hidden-phone");
+
+      firstNameInput.addEventListener("input", function () {
+        hiddenFirstName.value = firstNameInput.value;
+      });
+      
+      lastNameInput.addEventListener("input", function () {
+        hiddenLastName.value = lastNameInput.value;
+      });
+      
+      emailInput.addEventListener("input", function () {
+        hiddenEmail.value = emailInput.value;
+      });
+      
+      phoneInput.addEventListener("input", function () {
+        hiddenPhone.value = phoneInput.value;
+      });
+    });
+  </script>
+
+</body>
+</html>
