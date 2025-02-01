@@ -68,6 +68,16 @@ function MostActive() {
     }
   }, []);
 
+  const activeRedirect = (symbol: string) => {
+    const url = `https://stock-market-summary-server-b48b85a337b0.herokuapp.com/${symbol}`;
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            console.log(data); 
+            window.location.href = `/${symbol}`;
+          })
+          .catch(error => console.error('Error:', error));
+  };
 
   return (
     <div>
@@ -87,14 +97,7 @@ function MostActive() {
                         <div className="table_grid">
                           {item.most_actively_traded.slice(0, 4).map((stock, index) => (
                             <div key={index} className="table_data">
-                              <p>
-                              <a
-                                  href={`/news/${index}`}
-                                  
-                                >
-                                  {stock.name}
-                                </a>
-                              </p>
+                              <p className="stock_link"><a onClick={() => activeRedirect(stock.symbol)}>{stock.name}</a></p>
                               <p>{stock.symbol}</p>
                               <p>${stock.price}</p>
                               <p>
