@@ -22,10 +22,10 @@ function RenderSummaries() {
           </thead>
           <tbody>
             <tr>
-              <td className="half-width">
+              <td className="most-width">
                 <div className="graph_div"><BubbleChart /></div>
               </td>
-              <td className="half-width">
+              <td className="quarter-width">
                 <div className="table_div">
                   <table>
                     <thead>
