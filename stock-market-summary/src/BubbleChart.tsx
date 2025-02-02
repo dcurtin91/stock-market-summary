@@ -1,4 +1,3 @@
-
 import { Bubble } from 'react-chartjs-2';
 import { useState, useEffect } from 'react';
 import { db } from './Firebase';
