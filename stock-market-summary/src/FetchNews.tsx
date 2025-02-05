@@ -93,10 +93,11 @@ function FetchNews() {
             )}
             {Array.isArray(item.feed) && item.feed.length > 0 ? (
               <div className='table_data'>
+                <p className='recent_articles'>Recent Relevant Articles</p>
                 {item.feed.map((record, index) => (
-                  <div key={index}>
-                    <a href={`${record.url}`} target="_blank">{record.title}</a><br></br><br></br>
-                  </div>
+                    <div key={index}>
+                      <a href={`${record.url}`} target="_blank">{record.title}</a><br></br><br></br>
+                    </div>
                 ))}
               </div>
             ) : (

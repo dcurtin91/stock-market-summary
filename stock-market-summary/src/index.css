@@ -15,11 +15,11 @@
 
 a {
   font-weight: 500;
-  color: #649dff;
+  color: #3880fc;
   text-decoration: inherit;
 }
 a:hover {
-  color: #f1f1f3;
+  color: #002ba2!important;
 }
 
 body {
@@ -144,6 +144,11 @@ ul {
 
 .negativeCurr::before {
   content: '-$';
+}
+
+.recent_articles {
+  font-weight: bold;
+  margin-top: 40px; 
 }
 
 .stock_link {

@@ -30,6 +30,7 @@ type Collection = {
   symbol: string;
   sector: string;
   description: string;
+  exchangeShortName: string;
   }>;
 };
 
@@ -80,8 +81,9 @@ function TickerInfo() {
           {item.ticker_info.map((ticker) => (
             <div key={ticker.symbol}>
               <h3>{ticker.companyName}</h3>
-              <p>{ticker.symbol}</p>
-              <p>{ticker.sector}</p>
+              <p>Ticker: {ticker.symbol}</p>
+              <p>{ticker.exchangeShortName}</p>
+              {ticker.sector ? <p>Sector: {ticker.sector}</p> : null}
               <p>{ticker.description}</p>
             </div>
           ))}
