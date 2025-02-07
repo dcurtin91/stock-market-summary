@@ -1,12 +1,12 @@
 
 # Daily Stock Market Summarizer
 
-The Daily Stock Market Summarizer is an AI-powered tool designed to provide a concise and accessible overview of daily stock market activity. Whether you’re a market expert or a beginner, this app makes understanding the stock market easier by summarizing key events and trends in simple language.
+The Daily Stock Market Summarizer is designed to provide a concise and accessible overview of daily stock market activity. Whether you’re a market expert or a beginner, this app makes understanding the stock market easier by summarizing key events and trends in simple language. This information is gathered from two sources, Alpha Vantange and Financial Modeling Prep. 
 
 ## Features
-- **Daily Market Summary:** A 4-5 sentence overview of today’s market activity.
-- **Sector Highlights:** Notable sector performances described in 2-3 sentences.
+- **Most Actively Traded:** The day's most actively traded stocks. 
 - **Top Movers:** The top three gainer and loser stocks of the day.
+- **Ticker Info:** Specific data for each ticker that falls into the above categories, along with recent relevant news articles. 
 
 ---
 
@@ -15,11 +15,6 @@ The Daily Stock Market Summarizer is an AI-powered tool designed to provide a co
 ### Repository
 The repo for the server can be found here: https://github.com/dcurtin91/stock-market-summary-server
 
-### Deployment
-The server is currently deployed at:
-- **URL:** [Stock Market Summarizer Server](https://stock-market-summary-server-b48b85a337b0.herokuapp.com/summarize-market)
-
-> **Note:** Please be mindful when accessing this page. Each visit triggers an API call, which incurs costs. Avoid refreshing excessively unless necessary!
 
 ### How It Works
 
@@ -41,8 +36,8 @@ The server is currently deployed at:
 4. **Create a `.env` file** with your API keys for Firebase, OpenAI, and Alpha Vantage:
    ```
    FIREBASE_API_KEY=your_firebase_api_key
-   OPENAI_API_KEY=your_openai_api_key
    ALPHA_VANTAGE_API_KEY=your_alpha_vantage_api_key
+   FINANCIAL_MODELING_PREP_API_KEY=your_financial_modeling_prep_api_key
    ```
 5. **Run the server:**
    ```bash
@@ -62,7 +57,7 @@ The front end is currently deployed at:
 
 ### How It Works
 - The front end is a React TSX app built via Vite for production, hence the files `index.html` and `vite.config.ts`.
-- Most work in the app is completed within `Firebase.tsx`:
+
 
 1. The Firestore database is configured.
 2. A Summary object is defined, so that the json received from the server can be parsed properly.
