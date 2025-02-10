@@ -7,6 +7,8 @@ import {
   onSnapshot,
   query
 } from "firebase/firestore";
+import { Tooltip } from 'react-tooltip';
+
 
 
 type Collection = {
@@ -77,14 +79,15 @@ function TopGainers() {
 
 
   return (
-    <div>
+   <div>
+    <Tooltip id="my-tooltip" />
       {topGainers.map((item) => (
         <div key={item.id}>
           {Array.isArray(item.top_gainers) && item.top_gainers.length > 0 ? (
             <div className="table_grid">
               {item.top_gainers.slice(0, 10).map((stock, index) => (
                 <div key={index} className="table_data">
-                  <p className="stock_link"><a onClick={() => gainerRedirect(stock.symbol)}>{stock.symbol}</a></p>
+                  <p className="stock_link"><a onClick={() => gainerRedirect(stock.symbol)} data-tooltip-id="my-tooltip" data-tooltip-content={`${stock.name}`} >{stock.symbol}</a></p>
                   {/* <p>{stock.symbol}</p> */}
                   {/* <p>Price: ${stock.price}</p> */}
                   <p>+{stock.changesPercentage}%</p>
